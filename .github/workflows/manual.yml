@@ -12,12 +12,17 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: main # or specify your branch name
-
+          
+      - name: Set up Git
+        run: |
+          git config --global user.email "actions@example.com"
+          git config --global user.name "GitHub Actions"
+          
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: '3.9' # Specify the version of Python you need
-
+    
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
