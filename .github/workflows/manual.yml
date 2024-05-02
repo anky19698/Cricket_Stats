@@ -29,11 +29,5 @@ jobs:
           python get_data.py
           python create_record_tables.py
 
-      - name: Replace Existing Files
-        run: |
-          mv all_ipl_data.csv all_ipl_data_old.csv # Rename old combined.csv if needed
-          mv cricket_database.db cricket_database_old.db     # Rename old cricket.db if needed
-          mv cricket_database.db cricket_database.db
-
       - name: Deploy Streamlit App
         run: streamlit run cricomania.py
