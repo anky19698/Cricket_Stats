@@ -15,7 +15,6 @@ def query_database(conn, query):
     data = cursor.fetchall()
     return column_names, data
 
-key = 'AIzaSyAamovnBF6RG3AfBOJU3xejPlyC9qWXAVo'
 
 
 def filter_database(user_input):
