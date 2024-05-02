@@ -2,6 +2,6 @@ streamlit
 pandas
 db-sqlite3
 google.generativeai
-zipfile
+zipfile36
 numpy
 requests
