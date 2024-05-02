@@ -2,7 +2,7 @@ name: Update Data and Deploy Streamlit App
 
 on:
   schedule:
-    - cron: '20 17 * * *' # Daily trigger at 2 AM UTC
+    - cron: '35 17 * * *' # Daily trigger at 2 AM UTC
 
 jobs:
   update_and_deploy:
