@@ -13,7 +13,7 @@ import numpy as np
 url = 'https://cricsheet.org/downloads/ipl_male_csv2.zip'
 
 response = requests.get(url)
-destination_folder = 'Cricmetric/iplData'
+destination_folder = 'Cricstat/iplData'
 
 if response.status_code == 200:
     with zipfile.ZipFile(io.BytesIO(response.content), 'r') as zip_files:
@@ -25,7 +25,7 @@ else:
 
 # Extract Zip File and Create CSV of All IPL Data
 
-files = glob.glob('Cricmetric/iplData/[0-9]*.csv')
+files = glob.glob('Cricstat/iplData/[0-9]*.csv')
 all_files = []
 for file in files:
     filename = os.path.basename(file)
