@@ -12,10 +12,11 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Update Data and Generate New Files
-        run: |
-          python get_data.py
-          python create_record_tables.py
+      - name: Update Data
+        run: python get_data.py
+
+      - name: Create SQLite Database
+        run: python create_record_tables.py
 
       - name: Replace Existing Files
         run: |
