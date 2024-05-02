@@ -1,1 +1,7 @@
-
+streamlit
+pandas
+sqlite3
+google.generativeai
+zipfile
+numpy
+requests
