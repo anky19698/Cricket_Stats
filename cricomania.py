@@ -4,6 +4,8 @@ import google.generativeai as genai
 import json
 import sqlite3
 
+key = st.secrets['key']
+
 def connect_to_database(database_name):
     conn = sqlite3.connect(database_name)
     return conn
