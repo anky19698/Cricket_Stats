@@ -1,0 +1,27 @@
+name: Update Data and Deploy Streamlit App
+
+on:
+  schedule:
+    - cron: '0 17 * * *' # Daily trigger at 2 AM UTC
+
+jobs:
+  update_and_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Update Data and Generate New Files
+        run: |
+          python get_data.py
+          python create_record_tables.py
+
+      - name: Replace Existing Files
+        run: |
+          mv all_ipl_data.csv all_ipl_data_old.csv # Rename old all_ipl_data.csv if needed
+          mv cricket_database.db cricket_database_old.db     # Rename old cricket_database.db if needed
+          mv cricket_database.db cricket_database.db
+
+      - name: Deploy Streamlit App
+        run: streamlit run cricomania.py
