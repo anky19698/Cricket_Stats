@@ -15,6 +15,7 @@ def query_database(conn, query):
     data = cursor.fetchall()
     return column_names, data
 
+key = 'AIzaSyAamovnBF6RG3AfBOJU3xejPlyC9qWXAVo'
 
 
 def filter_database(user_input):
@@ -163,10 +164,10 @@ def main():
         # Display user message in chat message container
         with st.chat_message("user"):
             st.markdown(user_input)
-
+    try:
         # Display assistant response in chat message container
         with st.chat_message("assistant"):
-            try:
+            
                 sql_query = filter_database(user_input)
                 # Query the database
                 if sql_query:
@@ -185,12 +186,13 @@ def main():
 
                 else:
                     st.write("Sorry, I couldn't understand your query.")
-            except:
-                st.write("This Question Was a Googly, Please Try Some Another Delivery")
+            
 
         # Add assistant response to chat history
         st.session_state.messages.append({"role": "assistant", "content": content.text})
 
+    except:
+        st.write("This Question Was a Googly, Please Try Some Another Delivery")
 
     # Close the connection
     conn.close()
