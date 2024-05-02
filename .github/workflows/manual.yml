@@ -24,9 +24,8 @@ jobs:
           pip install -r requirements.txt # if you have any dependencies
 
       - name: Update Data and Generate New Files
-        run: |
-          python get_data.py
-          python create_record_tables.py
+        run: python get_data.py
+          
 
-      - name: Deploy Streamlit App
-        run: streamlit run cricomania.py
+      - name: Add to Database
+        run: python create_record_tables.py
