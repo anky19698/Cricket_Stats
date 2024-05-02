@@ -32,7 +32,7 @@ jobs:
 
       - name: Add new files
         run: |
-          git add all_ipl_data.csv cricket_database.db  # Add all changes to the staging area
+          git add cricket_database.db  # Add all changes to the staging area
           git diff --cached --exit-code || git commit -m "Update data and generate new files"  # Commit changes if there are any
           
       - name: Push changes
