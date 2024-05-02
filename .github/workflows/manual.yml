@@ -29,3 +29,13 @@ jobs:
 
       - name: Add to Database
         run: python create_record_tables.py
+
+      - name: Add new files
+        run: |
+          git add .  # Add all changes to the staging area
+          git diff --cached --exit-code || git commit -m "Update data and generate new files"  # Commit changes if there are any
+          
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
