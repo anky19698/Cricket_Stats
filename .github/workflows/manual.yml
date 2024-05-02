@@ -31,20 +31,20 @@ jobs:
       - name: Update Data and Generate New Files
         run: python get_data.py
           
-
+      - name: Replace cricket_database.db
+        run: mv cricket_database.db cricket_database_old.db # Rename old cricket_database.db if needed
+          
       - name: Add to Database
         run: python create_record_tables.py
-        
-      - name: Replace cricket_database.db
-        run: |
-          mv cricket_database.db cricket_database_old.db # Rename old cricket_database.db if needed
-          mv cricket_database_new.db cricket_database.db # Rename new cricket_database.db to replace the old one
-          
+      
       - name: Add new files
         run: |
           git add cricket_database.db  # Add all changes to the staging area
           git diff --cached --exit-code || git commit -m "Update data and generate new files"  # Commit changes if there are any
-          
+
+      - name: Remove old database file
+        run: rm cricket_database_old.db
+      
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
