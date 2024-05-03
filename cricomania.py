@@ -155,7 +155,7 @@ def analyze_result(df, user_input):
 def main():
     st.title("Cricket Data Chat App")
     # Load Database of Chats
-    collection = load_database_collection()
+    collection = load_database_collection(mongo_uri)
 
     # Connect to Cricket Data
     conn = connect_to_database('cricket_database.db')
