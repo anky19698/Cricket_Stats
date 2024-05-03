@@ -3,8 +3,35 @@ import pandas as pd
 import google.generativeai as genai
 import json
 import sqlite3
+from pymongo.mongo_client import MongoClient
+import certifi
 
+# Database for Storing Chats
+ca = certifi.where()
+
+mongo_uri = st.secrets['mongo_uri']
 key = st.secrets['key']
+
+def load_database_collection(mongo_uri):
+    # Connect to MongoDB
+    ca = certifi.where()
+
+    # Create a new client and connect to the server
+    client = MongoClient(mongo_uri, tlsCAFile=ca)
+
+    # Create Database
+    mydb = client['cricket_chats']
+
+    # Create Collection
+    collection = mydb.cricket_messages
+
+    return collection
+
+def store_message(collection, message):
+    # Insert message into MongoDB collection
+    collection.insert_one(message)
+
+
 
 def connect_to_database(database_name):
     conn = sqlite3.connect(database_name)
@@ -118,6 +145,8 @@ def analyze_result(df, user_input):
     Act as a Cricket Analyst
     Based on Previous {user_input}, You have Successfully got a resulting Dataframe: {df}
     Analyze this Dataframe about cricket records, Give a brief summary highlighting only important stats, in 3-4 lines
+    
+    If you see the Empty Dataframe, Respond in a Cricket Sarcastic way!
     """
     response = model.generate_content(prompt)
 
@@ -125,7 +154,10 @@ def analyze_result(df, user_input):
 
 def main():
     st.title("Cricket Data Chat App")
+    # Load Database of Chats
+    collection = load_database_collection()
 
+    # Connect to Cricket Data
     conn = connect_to_database('cricket_database.db')
 
     # # User input
@@ -162,41 +194,43 @@ def main():
     if user_input := st.chat_input("What is up?"):
         # Add user message to chat history
         st.session_state.messages.append({"role": "user", "content": user_input})
-        
-        try:
-            # Display user message in chat message container
-        
-            with st.chat_message("user"):
-                st.markdown(user_input)
-        
-            # Display assistant response in chat message container
-            with st.chat_message("assistant"):
-                
-                    sql_query = filter_database(user_input)
-                    # Query the database
-                    if sql_query:
-                        column_names, result = query_database(conn, sql_query)
-    
-                        # Create DataFrame
-                        df = pd.DataFrame(result, columns=column_names)
-    
-                        # Display result in a table
-                        # st.write(df)
-    
-                        content = analyze_result(df, user_input)
-                        st.write(content.text)
-    
-                        st.write(df)
-    
-                    else:
-                        st.write("Sorry, I couldn't understand your query.")
-                
-    
-            # Add assistant response to chat history
-            st.session_state.messages.append({"role": "assistant", "content": content.text})
+        # Display user message in chat message container
 
-        except:
-            st.write("This Question Was a Googly, Please Try Some Another Delivery")
+    try:
+        with st.chat_message("user"):
+            st.markdown(user_input)
+
+        # Display assistant response in chat message container
+        with st.chat_message("assistant"):
+
+                sql_query = filter_database(user_input)
+                # Query the database
+                if sql_query:
+                    column_names, result = query_database(conn, sql_query)
+
+                    # Create DataFrame
+                    df = pd.DataFrame(result, columns=column_names)
+
+                    # Display result in a table
+                    # st.write(df)
+
+                    content = analyze_result(df, user_input)
+                    st.write(content.text)
+                    # Store user message and assistant response
+                    store_message(collection,
+                                  {"User": user_input,
+                                   "AI": content.text})
+                    st.write(df)
+
+                else:
+                    st.write("Sorry, I couldn't understand your query.")
+
+
+        # Add assistant response to chat history
+        st.session_state.messages.append({"role": "assistant", "content": content.text})
+
+    except:
+        st.write("This Question Was a Googly, Please Try Some Another Delivery")
 
     # Close the connection
     conn.close()
