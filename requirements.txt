@@ -5,3 +5,5 @@ google.generativeai
 zipfile36
 numpy
 requests
+pymongo
+certifi
