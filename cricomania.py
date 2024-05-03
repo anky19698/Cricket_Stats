@@ -196,41 +196,41 @@ def main():
         st.session_state.messages.append({"role": "user", "content": user_input})
         # Display user message in chat message container
 
-    try:
-        with st.chat_message("user"):
-            st.markdown(user_input)
-
-        # Display assistant response in chat message container
-        with st.chat_message("assistant"):
-
-                sql_query = filter_database(user_input)
-                # Query the database
-                if sql_query:
-                    column_names, result = query_database(conn, sql_query)
-
-                    # Create DataFrame
-                    df = pd.DataFrame(result, columns=column_names)
-
-                    # Display result in a table
-                    # st.write(df)
-
-                    content = analyze_result(df, user_input)
-                    st.write(content.text)
-                    # Store user message and assistant response
-                    store_message(collection,
-                                  {"User": user_input,
-                                   "AI": content.text})
-                    st.write(df)
-
-                else:
-                    st.write("Sorry, I couldn't understand your query.")
-
-
-        # Add assistant response to chat history
-        st.session_state.messages.append({"role": "assistant", "content": content.text})
-
-    except:
-        st.write("This Question Was a Googly, Please Try Some Another Delivery")
+        try:
+            with st.chat_message("user"):
+                st.markdown(user_input)
+    
+            # Display assistant response in chat message container
+            with st.chat_message("assistant"):
+    
+                    sql_query = filter_database(user_input)
+                    # Query the database
+                    if sql_query:
+                        column_names, result = query_database(conn, sql_query)
+    
+                        # Create DataFrame
+                        df = pd.DataFrame(result, columns=column_names)
+    
+                        # Display result in a table
+                        # st.write(df)
+    
+                        content = analyze_result(df, user_input)
+                        st.write(content.text)
+                        # Store user message and assistant response
+                        store_message(collection,
+                                      {"User": user_input,
+                                       "AI": content.text})
+                        st.write(df)
+    
+                    else:
+                        st.write("Sorry, I couldn't understand your query.")
+    
+    
+            # Add assistant response to chat history
+            st.session_state.messages.append({"role": "assistant", "content": content.text})
+    
+        except:
+            st.write("This Question Was a Googly, Please Try Some Another Delivery")
 
     # Close the connection
     conn.close()
