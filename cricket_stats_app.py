@@ -164,7 +164,7 @@ def main():
     st.title("Cricket Stats Assistant")
 
     # Instructions for Chat App
-    instructions_button = st.button("Read Instructions")
+    instructions_button = st.button("How to Use")
 
     instructions = """
     This is Cricket(IPL) Stats Assistant, which answers your cricket stats queries.
@@ -185,7 +185,7 @@ def main():
     
     if instructions_button:
         # Display the text if the button is clicked
-        st.text_area("Hidden Text", value=instructions, height=100, disabled=True)
+        st.text_area("Hidden Text", value=instructions, disabled=True)
     
     # Load Database of Chats
     collection = load_database_collection(mongo_uri)
