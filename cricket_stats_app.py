@@ -96,7 +96,7 @@ def filter_database(user_input):
     # user_input = "kl rahul vs jasprit bumrah Record"
 
     input_prompt = f"""
-    You are a Smart AI Cricket Analyst Chatbot, Working on IPL Data
+    You are a Smart AI Cricket Analyst, Working on IPL(Indian Premier League) Data
     
     You're tasked with generating a SQL query based on the user input to filter cricket data from the database. Your goal is to extract Player Names, Stadium Names, and Team Names from the user input and filter accordingly.
     
@@ -113,8 +113,13 @@ def filter_database(user_input):
     
     Expected SQL Output:
     Select * From batter_vs_bowler where striker LIKE "V% Kohli" AND bowler LIKE "J% Bumrah"
+
+    2) virat kohli runs in ipl 2024
     
-    2) most sixes hit by player: In this case, you should apply sort in SQL query, and retrieve only top 10 rows 
+    Expected SQL Output:
+    Select * From batting_record_by_year where striker LIKE "V% Kohli" AND year=2024"
+    
+    3) most sixes hit by player: In this case, you should apply sort in SQL query, and retrieve only top 10 rows 
     
     Remember, only use filters or sorts in the SQL query, and do not use any type of JOIN operations.
     
@@ -142,7 +147,7 @@ def analyze_result(df, user_input):
     genai.configure(api_key=key)
     model = genai.GenerativeModel('gemini-pro')
     prompt = f"""
-    Act as a Cricket Analyst
+    Act as a Smart AI Cricket Analyst Chat Assistant Like ChatGPT, 
     Based on Previous {user_input}, You have Successfully got a resulting Dataframe: {df}
     Analyze this Dataframe about cricket records, Give a brief summary highlighting only important stats, in 3-4 lines
     """
