@@ -185,7 +185,7 @@ def main():
     
     if instructions_button:
         # Display the text if the button is clicked
-        st.text_area("Hidden Text", value=instructions, height=300, disabled=True)
+        st.text_area("Instructions", value=instructions, height=300, disabled=True)
     
     # Load Database of Chats
     collection = load_database_collection(mongo_uri)
