@@ -162,6 +162,31 @@ def analyze_result(df, user_input):
 
 def main():
     st.title("Cricket Stats Assistant")
+
+    # Instructions for Chat App
+    instructions_button = st.button("Read Instructions")
+
+    instructions = """
+    This is Cricket(IPL) Stats Assistant, which answers your cricket stats queries.
+    It has Latest Data up to 2 previous days.
+    
+    You Can Ask Queries like: 
+    1) Virat Kohli runs in ipl 2024
+    2) virat kohli vs jasprit bumrah
+    3) yuzi chahal bowling record in ipl
+    4) rohit sharma record vs sunrisers hyderabad
+    5) virat kohli record at wankhede stadium
+
+    Some Instructions for Better Response:
+    1) Please try using Full Names of Players/Teams/Venue
+    2) Avoid using short names or nick names
+    3) Take above queries as a reference
+    """
+    
+    if instructions_button:
+        # Display the text if the button is clicked
+        st.text_area("Hidden Text", value=instructions, height=100, disabled=True)
+    
     # Load Database of Chats
     collection = load_database_collection(mongo_uri)
 
