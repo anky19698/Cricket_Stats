@@ -117,9 +117,14 @@ def filter_database(user_input):
     2) virat kohli runs in ipl 2024
     
     Expected SQL Output:
-    Select * From batting_record_by_year where striker LIKE "V% Kohli" AND year=2024"
+    Select * From batting_record_by_year where striker LIKE "V% Kohli" AND year=2024
+
+    3) jasprit bumrah wickets in ipl
     
-    3) most sixes hit by player: In this case, you should apply sort in SQL query, and retrieve only top 10 rows 
+    Expected SQL Output:
+    Select * From bowling_record where bowler LIKE "J% Bumrah"
+    
+    4) most sixes hit by player: In this case, you should apply sort in SQL query, and retrieve only top 10 rows 
     
     Remember, only use filters or sorts in the SQL query, and do not use any type of JOIN operations.
     
