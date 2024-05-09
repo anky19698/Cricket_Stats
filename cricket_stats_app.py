@@ -148,7 +148,7 @@ def filter_database(user_input):
 
 def analyze_result(df, user_input):
     genai.configure(api_key=key)
-    # model = genai.GenerativeModel('gemini-pro')
+    model = genai.GenerativeModel('gemini-pro')
     # prompt = f"""
     # You are a Cricket Data Analyst, You have to understand the dataframe, provide 100% accurate summary about a cricket record from dataframe, 
     # Based on Previous User Input: {user_input}, You have Successfully got a resulting Dataframe: {df}
