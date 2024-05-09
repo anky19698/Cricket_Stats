@@ -116,12 +116,12 @@ def filter_database(user_input):
     2) virat kohli runs in ipl 2024
 
     Expected SQL Output:
-    Select innings, year, runs_scored, batting_SR, batting_AVG, dot_percentage, fifties, hundreds, sixes, fours From batting_record_by_year where striker LIKE "V% Kohli" AND year=2024
+    Select striker, innings, year, runs_scored, batting_SR, batting_AVG, dot_percentage, fifties, hundreds, sixes, fours From batting_record_by_year where striker LIKE "V% Kohli" AND year=2024
 
     3) jasprit bumrah wickets in ipl
 
     Expected SQL Output:
-    Select innings, wickets_taken, dots, Economy From bowling_record where bowler LIKE "J% Bumrah"
+    Select bowler, innings, wickets_taken, dots, Economy From bowling_record where bowler LIKE "J% Bumrah"
 
     4) most sixes hit by player: In this case, you should apply sort in SQL query, and retrieve only top 10 rows 
 
