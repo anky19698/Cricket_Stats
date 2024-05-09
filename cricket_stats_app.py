@@ -67,8 +67,8 @@ def filter_database(user_input):
 
     TABLE: batter_vs_bowler
 
-    striker,bowler,innings,runs_scored,balls_faced,wickets_taken,dots,fours,sixes,batting_SR,dot_percentage,inning_vs_dismissal
-    A Ashish Reddy,A Nehra,2,7,9,1,5,1,0,77.77777777777777,55.55555555555556,1
+    striker,bowler,innings,runs_scored,balls_faced,wickets_taken,dots,fours,sixes,batting_SR,dot_percentage
+    A Ashish Reddy,A Nehra,2,7,9,1,5,1,0,77.77777777777777,55.55555555555556
 
     TABLE: bowling_record
 
