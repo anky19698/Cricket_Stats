@@ -174,7 +174,8 @@ def analyze_result(df, user_input):
     # """
 
     prompt = f"""
-    You are a Cricket Data Analyst, Analyze the Dataframe: {df} of {user_input}, and Summarize it brief.
+    You are a Cricket Data Analyst, Analyze the Dataframe: {df} of {user_input}, and Summarize it in brief.
+    Highlight Stats like runs_scored/runs_conceded and wickets_taken. then you can highlight other key stats.
     """
     
     response = model.generate_content(prompt)
