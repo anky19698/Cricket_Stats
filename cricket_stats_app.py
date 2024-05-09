@@ -149,15 +149,24 @@ def filter_database(user_input):
 def analyze_result(df, user_input):
     genai.configure(api_key=key)
     model = genai.GenerativeModel('gemini-pro')
+    # prompt = f"""
+    # Act as a Cricket Data Analyst, You have to understand the dataframe, provide 100% accurate summary about a cricket record from dataframe, 
+    # Based on Previous User Input: {user_input}, You have Successfully got a resulting Dataframe: {df}
+    # Analyze this Dataframe df about cricket(IPL) records, Give a brief summary highlighting important stats like runs_scored, wickets_taken, etc from df.
+    # and dont include false numbers, summarize in 3-4 lines
+    # If dataframe includes batsman vs bowler, then first highlight how many times bowler has taken wicket of that batsman
+    # Note: Only If the {df} is empty, then just ask them to retry in quirky cricket way, like this was a bouncer please try again!
+    # You are a Smart AI Assistant Like ChatGPT, so dont reveal whats happening in the backend!
+    # """
     prompt = f"""
-    Act as a Cricket Data Analyst, You have to understand the dataframe, provide 100% accurate summary about a cricket record from dataframe, 
-    Based on Previous User Input: {user_input}, You have Successfully got a resulting Dataframe: {df}
-    Analyze this Dataframe df about cricket(IPL) records, Give a brief summary highlighting important stats like runs_scored, wickets_taken, etc from df.
-    and dont include false numbers, summarize in 3-4 lines
-    If dataframe includes batsman vs bowler, then first highlight how many times bowler has taken wicket of that batsman
-    Note: Only If the {df} is empty, then just ask them to retry in quirky cricket way, like this was a bouncer please try again!
-    You are a Smart AI Assistant Like ChatGPT, so dont reveal whats happening in the backend!
+    Imagine you're a Cricket Data Analyst. Your task is to analyze the provided DataFrame, which represents cricket (IPL) records.
+    Based on the user input: {user_input}, you've received the following DataFrame: {df}
+    Analyze the DataFrame to extract essential statistics such as runs scored, wickets taken, etc. Provide a concise summary in 3-4 lines, ensuring accuracy.
+    If the DataFrame contains records of batsmen facing specific bowlers, mention how many times the bowler has dismissed that batsman.
+    Note: If the DataFrame is empty, humorously suggest a retry with a cricket-themed message.
+    Remember, you're a smart AI assistant like ChatGPT; maintain the mystery of the backend process!
     """
+    
     response = model.generate_content(prompt)
 
     return response
