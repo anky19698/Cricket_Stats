@@ -154,7 +154,9 @@ def analyze_result(df, user_input):
     Based on Previous User Input: {user_input}, You have Successfully got a resulting Dataframe: {df}
     Analyze this Dataframe df about cricket(IPL) records, Give a brief summary highlighting important stats like runs_scored, wickets_taken, etc from df.
     and dont include false numbers, summarize in 3-4 lines
+    If dataframe includes batsman vs bowler, then first highlight how many times bowler has taken wicket of that batsman
     Note: Only If the {df} is empty, then just ask them to retry in quirky cricket way, like this was a bouncer please try again!
+    You are a Smart AI Assistant Like ChatGPT, so dont reveal whats happening in the backend!
     """
     response = model.generate_content(prompt)
 
