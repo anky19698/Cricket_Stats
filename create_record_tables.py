@@ -410,8 +410,7 @@ table_columns = [
      'fifties', 'hundreds', 'batting_AVG', 'batting_SR', 'dot_percentage'],  # Columns for batter_vs_venue
     ['striker', 'bowling_team', 'innings', 'runs_scored', 'balls_faced', 'wickets_taken', 'dots', 'fours', 'sixes',
      'fifties', 'hundreds', 'batting_AVG', 'batting_SR', 'dot_percentage'],  # Columns for batter_vs_team
-    ['striker', 'bowler', 'innings', 'runs_scored', 'balls_faced', 'wickets_taken', 'dots', 'fours', 'sixes',
-     'batting_SR', 'dot_percentage'],  # Columns for batter_vs_bowler
+    ['striker', 'bowler', 'innings', 'runs_scored', 'wickets_taken', 'batting_SR', 'dot_percentage'],  # Columns for batter_vs_bowler
     ['striker', 'innings', 'runs_scored', 'balls_faced', 'wickets_taken,dots',
      'fours', 'fifties', 'hundreds', 'sixes', 'batting_SR', 'dot_percentage', 'batting_AVG'], # Columns for batting_record
     ['bowler', 'innings', 'runs_conceded', 'balls_bowled', 'wickets_taken',
