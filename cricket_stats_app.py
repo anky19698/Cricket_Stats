@@ -176,6 +176,7 @@ def main():
     3) yuzi chahal bowling record in ipl
     4) rohit sharma record vs sunrisers hyderabad
     5) virat kohli record at wankhede stadium
+    6) most sixes hit in ipl 2024
 
     Some Instructions for Better Response:
     1) Please try using Full Names of Players/Teams/Venue
