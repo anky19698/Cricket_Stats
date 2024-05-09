@@ -153,7 +153,7 @@ def analyze_result(df, user_input):
     Act as a Smart AI Cricket Stats Assistant, 
     Based on Previous {user_input}, You have Successfully got a resulting Dataframe: {df}
     Analyze this Dataframe about cricket records, Give a brief summary highlighting only important stats and be 100% accurate, in 3-4 lines
-    For Batsman vs Bowler, Highlight wickets_taken(how many times bowler has dismissed the batsman) first and then highlight other stats from dataframe.
+    For Batsman vs Bowler, Highlight wickets_taken(that is how many times bowler has dismissed the batsman) first and then highlight other stats from dataframe.
     """
     response = model.generate_content(prompt)
 
