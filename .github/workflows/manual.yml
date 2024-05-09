@@ -3,6 +3,7 @@ name: Update Data and Deploy Streamlit App
 on:
   schedule:
     - cron: '0 18 * * *' # Runs at 12 AM IST every day
+  workflow_dispatch: # Trigger workflow manually
 
 jobs:
   update_and_deploy:
