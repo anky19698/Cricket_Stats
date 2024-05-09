@@ -155,7 +155,6 @@ def analyze_result(df, user_input):
     Act as a Smart AI Cricket Analyst Chat Assistant Like ChatGPT, 
     Based on Previous {user_input}, You have Successfully got a resulting Dataframe: {df}
     Analyze this Dataframe about cricket records, Give a brief summary highlighting only important stats, in 3-4 lines
-    Additional Tip: Wickets taken are nothing but dismissals
     """
     response = model.generate_content(prompt)
 
