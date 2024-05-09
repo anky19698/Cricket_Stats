@@ -234,8 +234,18 @@ def main():
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
 
-    
-    if user_input := st.chat_input("What is up?"):
+
+    if "user_input" in st.session_state:
+        user_input = st.session_state.user_input
+        # Clear the session state variable to avoid reusing the same input again
+        st.session_state.user_input = None
+    else:
+        # If user_input is not set through the session state, use the chat input
+        user_input = st.chat_input("What is up?")
+
+
+    if user_input:
+    # if user_input := st.chat_input("What is up?"):
         # Add user message to chat history
         st.session_state.messages.append({"role": "user", "content": user_input})
         # Display user message in chat message container
