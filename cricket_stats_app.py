@@ -238,7 +238,7 @@ def main():
     if "user_input" in st.session_state:
         user_input = st.session_state.user_input
         # Clear the session state variable to avoid reusing the same input again
-        st.session_state.user_input = None
+        # st.session_state.user_input = None
     else:
         # If user_input is not set through the session state, use the chat input
         user_input = st.chat_input("What is up?")
