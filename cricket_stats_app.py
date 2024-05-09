@@ -154,7 +154,6 @@ def analyze_result(df, user_input):
     Based on Previous User Input: {user_input}, You have Successfully got a resulting Dataframe: {df}
     Analyze this Dataframe df about cricket(IPL) records, Give a brief summary highlighting important stats from df.
     and be 100% accurate, in 3-4 lines
-    Consider the Table Info: {table_info} to understand the dataframe.
     Note: Only If the {df} is empty, then just ask them to retry in quirky cricket way, like this was a bouncer please try again!
     """
     response = model.generate_content(prompt)
