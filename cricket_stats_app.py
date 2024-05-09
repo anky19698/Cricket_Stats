@@ -173,6 +173,24 @@ def analyze_result(df, user_input):
 def main():
     st.title("Cricket Stats Tracker")
 
+    
+    # Define recommended queries
+    recommended_queries = [
+        "Virat Kohli runs in IPL 2024",
+        "Virat Kohli vs Jasprit Bumrah",
+        "Yuzvendra Chahal bowling record in IPL",
+        "Rohit Sharma record vs Sunrisers Hyderabad",
+        "Virat Kohli record at Wankhede Stadium",
+        "Most sixes hit in IPL 2024"
+    ]
+
+    # Display recommended queries as buttons
+    st.sidebar.title("Recommended Queries")
+    for query in recommended_queries:
+        if st.sidebar.button(query):
+            # Set the selected query as user input
+            st.session_state.user_input = query
+    
     # Instructions for Chat App
     instructions_button = st.button("How to Use")
 
