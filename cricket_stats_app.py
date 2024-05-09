@@ -171,7 +171,7 @@ def analyze_result(df, user_input):
 
 
 def main():
-    st.title("Cricket Stats Tracker: Track IPL Records")
+    st.title("Cricket Stats Tracker")
 
     # Instructions for Chat App
     instructions_button = st.button("How to Use")
