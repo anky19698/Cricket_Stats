@@ -167,7 +167,7 @@ matchup = pd.merge(innings, runs_scored, on=['striker', 'bowler']).merge(
 matchup['batting_SR'] = 100 * matchup['runs_scored'] / matchup['balls_faced']
 matchup['dot_percentage'] = 100 * matchup['dots'] / matchup['balls_faced']
 # matchup['inning_vs_dismissal'] = matchup['innings'] - matchup['wickets_taken']
-
+matchup = matchup[['striker', 'bowler', 'innings', 'runs_scored', 'wickets_taken', 'batting_SR', 'dot_percentage']]
 # matchup.to_csv('matchups.csv', index=False)
 
 ##################
