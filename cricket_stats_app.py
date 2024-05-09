@@ -284,9 +284,7 @@ def main():
             # Add assistant response to chat history
             st.session_state.messages.append({"role": "assistant", "content": content.text})
 
-            # Flush
-            user_input = False
-            st.session_state.user_input = None
+            
             
         except:
             st.write("This Question Was a Googly, Please Try Some Another Delivery")
