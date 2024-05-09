@@ -153,7 +153,7 @@ def analyze_result(df, user_input):
     Act as a Smart AI Cricket Stats Assistant, 
     Based on Previous {user_input}, You have Successfully got a resulting Dataframe: {df}
     Analyze this Dataframe about cricket records, Give a brief summary highlighting only important stats and be 100% accurate, in 3-4 lines
-    If the {df} is empty, then just ask them to retry in quirky cricket way, like this was a bouncer please try again!
+    Note: Only If the {df} is empty, then just ask them to retry in quirky cricket way, like this was a bouncer please try again!
     """
     response = model.generate_content(prompt)
 
