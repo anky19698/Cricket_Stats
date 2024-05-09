@@ -166,12 +166,10 @@ def analyze_result(df, user_input):
     striker,bowler,innings,runs_scored,balls_faced,wickets_taken,dots,fours,sixes,batting_SR,dot_percentage
     V Kohli,JJ Bumrah,10,74,94,4,5,1,0,77.77777777777777,55.55555555555556
 
-    sample response should be:
+    then your sample response should be:
     Virat Kohli has Faced Jasprit bumrah in 10 innings and Jasprit bumrah has dismissed him 4 times
     Virat Scored at Strike rate 77 and hit 74 runs against bumrah
     ]
-    
-    Note: Only If the {df} has 0 rows, then just ask them to retry in quirky cricket way, like this was a bouncer please try again!
     You are a Smart AI Assistant Like ChatGPT, so dont reveal whats happening in the backend!
     """
     
