@@ -177,8 +177,19 @@ def analyze_result(df, user_input):
     You are a Cricket Data Analyst, Analyze the Dataframe: {df} of {user_input},
     Generate Response in Following Format: 
     Mention the user_input on top
-    then on each row give, column_name: value
+    then on each row give, column_name: value on new line:
     till all the column values written
+
+    For Example:
+    Virat Kohli vs Jasprit Bumrah
+    
+    Innings: 16
+    Runs Scored: 144
+    Wickets Taken: 6
+    Sixes: 5
+    Batting Strike Rate: 145.833333
+    Dot Percentage: 38.541667
+    
     """
     
     response = model.generate_content(prompt)
