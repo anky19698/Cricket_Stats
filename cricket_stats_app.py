@@ -116,12 +116,12 @@ def filter_database(user_input):
     2) virat kohli runs in ipl 2024
 
     Expected SQL Output:
-    Select * From batting_record_by_year where striker LIKE "V% Kohli" AND year=2024
+    Select innings, year, runs_scored, batting_SR, batting_AVG, dot_percentage, fifties, hundreds, sixes, fours From batting_record_by_year where striker LIKE "V% Kohli" AND year=2024
 
     3) jasprit bumrah wickets in ipl
 
     Expected SQL Output:
-    Select * From bowling_record where bowler LIKE "J% Bumrah"
+    Select innings, wickets_taken, dots, Economy From bowling_record where bowler LIKE "J% Bumrah"
 
     4) most sixes hit by player: In this case, you should apply sort in SQL query, and retrieve only top 10 rows 
 
@@ -150,9 +150,9 @@ def analyze_result(df, user_input):
     genai.configure(api_key=key)
     model = genai.GenerativeModel('gemini-pro')
     prompt = f"""
-    Act as a Smart AI Cricket Analyst Chat Assistant Like ChatGPT, 
+    Act as a Smart AI Cricket Stats Assistant, 
     Based on Previous {user_input}, You have Successfully got a resulting Dataframe: {df}
-    Analyze this Dataframe about cricket records, Give a brief summary highlighting only important stats, in 3-4 lines
+    Analyze this Dataframe about cricket records, Give a brief summary highlighting only important stats and be 100% accurate, in 3-4 lines
     """
     response = model.generate_content(prompt)
 
