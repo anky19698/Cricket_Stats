@@ -184,12 +184,7 @@ def main():
         "Most sixes hit in IPL 2024"
     ]
 
-    # Display recommended queries as buttons
-    st.sidebar.title("Recommended Queries")
-    for query in recommended_queries:
-        if st.sidebar.button(query):
-            # Set the selected query as user input
-            st.session_state.user_input = query
+    
     
     # Instructions for Chat App
     instructions_button = st.button("How to Use")
@@ -222,36 +217,24 @@ def main():
     # Connect to Cricket Data
     conn = connect_to_database('cricket_database.db')
 
-    # # User input
-    # user_input = st.text_input("Ask something about cricket:")
 
-    # # If user submits a query
-    # if st.button("Ask"):
-    #     # Generate SQL query based on user input (you need to implement this)
-    #     sql_query = filter_database(user_input)  # Implement this function
-    #
-    #     # Query the database
-    #     if sql_query:
-    #         column_names, result = query_database(conn, sql_query)
-    #
-    #         # Create DataFrame
-    #         df = pd.DataFrame(result, columns=column_names)
-    #
-    #         # Display result in a table
-    #         st.write(df)
-    #     else:
-    #         st.write("Sorry, I couldn't understand your query.")
-
+    # Display recommended queries as buttons
+    st.sidebar.title("Recommended Queries")
+    for query in recommended_queries:
+        if st.sidebar.button(query):
+            # Set the selected query as user input
+            st.session_state.user_input = query
+    
     # Initialize chat history
     if "messages" not in st.session_state:
         st.session_state.messages = []
 
-        # Display chat messages from history on app rerun
+    # Display chat messages from history on app rerun
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
 
-        # Accept user input
+    # Accept user input
     if user_input := st.chat_input("What is up?"):
         # Add user message to chat history
         st.session_state.messages.append({"role": "user", "content": user_input})
