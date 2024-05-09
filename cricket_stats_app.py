@@ -150,9 +150,9 @@ def analyze_result(df, user_input):
     genai.configure(api_key=key)
     model = genai.GenerativeModel('gemini-pro')
     prompt = f"""
-    Act as a Smart AI Cricket Stats Assistant, 
+    Act as a Smart AI Cricket Stats Assistant You have to provide summary about a cricket record, 
     Based on Previous User Input: {user_input}, You have Successfully got a resulting Dataframe: {df}
-    Analyze this Dataframe df about cricket(IPL) records, Give a brief summary highlighting only important stats like runs_scored, wickets_taken and then other key stats
+    Analyze this Dataframe df about cricket(IPL) records, Give a brief summary highlighting important stats from df.
     and be 100% accurate, in 3-4 lines
     Consider the Table Info: {table_info} to understand the dataframe.
     Note: Only If the {df} is empty, then just ask them to retry in quirky cricket way, like this was a bouncer please try again!
