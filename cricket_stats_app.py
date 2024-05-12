@@ -252,9 +252,7 @@ def main():
     user_input = st.session_state.user_input if "user_input" in st.session_state else ""
     
     # Display chat input box
-    user_input = st.text_input("What is up?", value=user_input)
-    
-    if user_input:
+    if user_input := st.text_input("What is up?", value=user_input):
     # if user_input := st.chat_input("What is up?"):
         # Add user message to chat history
         st.session_state.messages.append({"role": "user", "content": user_input})
