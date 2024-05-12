@@ -246,8 +246,14 @@ def main():
     # Retrieve user input from session state if available, otherwise display chat input box
     # user_input = st.session_state.user_input if "user_input" in st.session_state else st.text_input("What is up?")
 
-    # if user_input:
-    if user_input := st.chat_input("What is up?"):
+    # Retrieve user input from session state if available, otherwise display chat input box
+    if "user_input" in st.session_state:
+        user_input = st.session_state.user_input
+    else:
+        user_input = st.text_input("What is up?")
+    
+    if user_input:
+    # if user_input := st.chat_input("What is up?"):
         # Add user message to chat history
         st.session_state.messages.append({"role": "user", "content": user_input})
         # Display user message in chat message container
@@ -284,7 +290,7 @@ def main():
             # Add assistant response to chat history
             st.session_state.messages.append({"role": "assistant", "content": content.text})
 
-            
+            user_input = st.text_input("What is up?")
             
         except:
             st.write("This Question Was a Googly, Please Try Some Another Delivery")
