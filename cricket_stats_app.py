@@ -248,10 +248,11 @@ def main():
 
     # Retrieve user input from session state if available, otherwise display chat input box
     
-    if "user_input" in st.session_state:
-        user_input = st.session_state.user_input
-    else:
-        user_input = st.text_input("What is up?")
+    # Retrieve user input from session state if available, otherwise display chat input box
+    user_input = st.session_state.user_input if "user_input" in st.session_state else ""
+    
+    # Display chat input box
+    user_input = st.text_input("What is up?", value=user_input)
     
     if user_input:
     # if user_input := st.chat_input("What is up?"):
