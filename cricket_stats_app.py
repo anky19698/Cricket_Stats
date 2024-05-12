@@ -254,7 +254,16 @@ def main():
         <style>
         .stTextInput {
             position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        @media only screen and (max-width: 600px) {
+            .stTextInput {
+                width: calc(100% - 20px);
+                margin-left: 10px;
+                margin-right: 10px;
             }
+        }
         </style>
         """,
         unsafe_allow_html=True,
