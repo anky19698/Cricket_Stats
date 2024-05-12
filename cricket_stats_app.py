@@ -246,7 +246,21 @@ def main():
     # Retrieve user input from session state if available, otherwise display chat input box
     # user_input = st.session_state.user_input if "user_input" in st.session_state else st.text_input("What is up?")
 
-    # Retrieve user input from session state if available, otherwise display chat input box
+    # CSS for chatbox
+
+    
+    st.markdown(
+        """
+        <style>
+        .stTextInput {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
     
     # Retrieve user input from session state if available, otherwise display chat input box
     user_input = st.session_state.user_input if "user_input" in st.session_state else ""
