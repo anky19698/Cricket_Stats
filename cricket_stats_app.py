@@ -249,25 +249,7 @@ def main():
     # CSS for chatbox
 
     
-    st.markdown(
-        """
-        <style>
-        .stTextInput {
-            position: fixed;
-            bottom: 10%;
-            width: 50%;
-        }
-        @media only screen and (max-width: 600px) {
-            .stTextInput {
-                width: calc(100% - 20px);
-                margin-left: 10px;
-                margin-right: 10px;
-            }
-        }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
+    
     
     # Retrieve user input from session state if available, otherwise display chat input box
     user_input = st.session_state.user_input if "user_input" in st.session_state else ""
