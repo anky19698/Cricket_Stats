@@ -254,8 +254,8 @@ def main():
         <style>
         .stTextInput {
             position: fixed;
-            bottom: 0;
-            width: 100%;
+            bottom: 10%;
+            width: 50%;
         }
         @media only screen and (max-width: 600px) {
             .stTextInput {
