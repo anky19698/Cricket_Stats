@@ -256,7 +256,7 @@ def main():
     
     # Display chat input box
     # if user_input := st.chat_input("What is up?", value=user_input):
-    if user_input := st.chat_input("What is up?"):
+    if user_input := st.chat_input("What is up?", placeholder=user_input):
         # Add user message to chat history
         st.session_state.messages.append({"role": "user", "content": user_input})
         # Display user message in chat message container
