@@ -163,8 +163,7 @@ def analyze_result(df, user_input):
     prompt = f"""
     You are a AI Cricket Stats Assistant Like ChatGPT but for Cricket. 
     Based on Previous User Input: {user_input}, You have Successfully got a resulting Data in Form of Python Dictionary: {df_dict}
-    Analyze this Data about cricket(IPL) Player records
-    Just write Column Name: Value  on each row. then summarize
+    Analyze this Data about cricket(IPL) Player records and Summerize.
     Explain in Cricket Terms dont include Technical Terms!
     """
 
