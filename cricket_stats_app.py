@@ -244,19 +244,25 @@ def main():
     #     user_input = st.chat_input("What is up?")
 
     # Retrieve user input from session state if available, otherwise display chat input box
-    # user_input = st.session_state.user_input if "user_input" in st.session_state else st.text_input("What is up?")
+    
 
     # CSS for chatbox
 
+    user_input = st.chat_input("What is up?")
     
+    if "user_input" in st.session_state:
+        user_input = st.session_state.user_input
+        # Clear the session state variable to avoid reusing the same input again
+        st.session_state.user_input = None
     
+    # user_input = st.session_state.user_input if "user_input" in st.session_state else st.chat_input("What is up?")
     # Retrieve user input from session state if available, otherwise display chat input box
-    user_input = st.session_state.user_input if "user_input" in st.session_state else ""
+    # user_input = st.session_state.user_input if "user_input" in st.session_state else ""
     
     # Display chat input box
-    # if user_input := st.text_input("What is up?", value=user_input):
+    if user_input:
     
-    if user_input := st.chat_input("What is up?"):
+    # if user_input := st.chat_input("What is up?"):
         # Add user message to chat history
         st.session_state.messages.append({"role": "user", "content": user_input})
         # Display user message in chat message container
