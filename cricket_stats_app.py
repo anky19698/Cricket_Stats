@@ -247,7 +247,20 @@ def main():
     # user_input = st.session_state.user_input if "user_input" in st.session_state else st.text_input("What is up?")
 
     # CSS for chatbox
-
+    st.markdown(
+        """
+        <style>
+            .stTextInput {
+                position: fixed;
+                bottom: 0;
+                width: 90%;
+                margin-left: 5%;
+                margin-right: 5%;
+            }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
     
     
     
@@ -255,8 +268,9 @@ def main():
     user_input = st.session_state.user_input if "user_input" in st.session_state else ""
     
     # Display chat input box
-    # if user_input := st.chat_input("What is up?", value=user_input):
-    if user_input := st.chat_input("What is up?", placeholder=user_input):
+    if user_input := st.text_input("What is up?", value=user_input):
+    
+    # if user_input := st.chat_input("What is up?"):
         # Add user message to chat history
         st.session_state.messages.append({"role": "user", "content": user_input})
         # Display user message in chat message container
