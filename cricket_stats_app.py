@@ -149,15 +149,23 @@ def filter_database(user_input):
 def analyze_result(df, user_input):
     genai.configure(api_key=key)
     model = genai.GenerativeModel('gemini-pro')
+    # prompt = f"""
+    # You are a AI Cricket Stats Assistant Like ChatGPT but for Cricket. 
+    # Based on Previous User Input: {user_input}, You have Successfully got a resulting Dataframe: {df}
+    # Analyze this Dataframe df about cricket(IPL) records, Give a brief summary highlighting important stats like runs_scored, wickets_taken, etc from df.
+    # and dont include false numbers, summarize in 3-4 lines
+    # You are a Smart AI Assistant Like ChatGPT, so dont reveal whats happening in the backend!
+    # Explain in Cricket Terms dont include Technical Terms!
+    # """
+
     prompt = f"""
     You are a AI Cricket Stats Assistant Like ChatGPT but for Cricket. 
-    Based on Previous User Input: {user_input}, You have Successfully got a resulting Dataframe: {df}
-    Analyze this Dataframe df about cricket(IPL) records, Give a brief summary highlighting important stats like runs_scored, wickets_taken, etc from df.
-    and dont include false numbers, summarize in 3-4 lines
-    You are a Smart AI Assistant Like ChatGPT, so dont reveal whats happening in the backend!
+    Based on Previous User Input: {user_input}, You have Successfully got a resulting Data: {df}
+    Analyze this Data about cricket(IPL) Player records
     Explain in Cricket Terms dont include Technical Terms!
     """
 
+    
     # prompt = f"""
     # You are a Cricket Data Analyst, Summarize the Dataframe: {df} of {user_input},
     # Generate Response in Following Format: 
