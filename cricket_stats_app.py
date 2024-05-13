@@ -157,10 +157,12 @@ def analyze_result(df, user_input):
     # You are a Smart AI Assistant Like ChatGPT, so dont reveal whats happening in the backend!
     # Explain in Cricket Terms dont include Technical Terms!
     # """
-
+    # Convert DataFrame to dictionary
+    df_dict = df.to_dict(orient='records')
+    
     prompt = f"""
     You are a AI Cricket Stats Assistant Like ChatGPT but for Cricket. 
-    Based on Previous User Input: {user_input}, You have Successfully got a resulting Data: {df}
+    Based on Previous User Input: {user_input}, You have Successfully got a resulting Data in Form of Python Dictionary: {df_dict}
     Analyze this Data about cricket(IPL) Player records
     Just write Column Name: Value  on each row. then summarize
     Explain in Cricket Terms dont include Technical Terms!
