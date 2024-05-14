@@ -512,7 +512,7 @@ def query_database(conn, query):
 
 
 # csv_files = ['bat_vs_venue.csv', 'bat_vs_team.csv', 'matchups.csv', 'batting_record.csv', 'bowling_record.csv']
-dataframes = [bat_vs_venue, bat_vs_team, matchup, batting, bowling, batting_by_year, bowling_by_year, batting_record_by_innings, bowling_record_by_innings]
+dataframes = [bat_vs_venue, bat_vs_team, matchup, batting, bowling, batting_by_year, bowling_by_year, batting_by_innings, bowling_by_innings]
 table_names = ['batter_vs_venue', 'batter_vs_team', 'batter_vs_bowler', 'batting_record', 'bowling_record', 'batting_record_by_year', 'bowling_record_by_year', 'batting_record_by_innings', 'bowling_record_by_innings']
 table_columns = [
     ['striker', 'stadium', 'innings', 'runs_scored', 'balls_faced', 'wickets_taken', 'dots', 'fours', 'sixes',
