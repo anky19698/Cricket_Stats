@@ -287,6 +287,68 @@ batting_by_year['dot_percentage'] = 100 * batting_by_year['dots'] / batting_by_y
 batting_by_year['batting_AVG'] = batting_by_year['runs_scored'] / batting_by_year['wickets_taken']
 
 
+#############################
+# Batting Record by Innings #
+#############################
+
+data10 = df.copy()
+
+# Additional Columns
+
+data10['is_dot'] = data10['runs_off_bat'].apply(lambda x: 1 if x == 0 else 0)
+data10['is_one'] = data10['runs_off_bat'].apply(lambda x: 1 if x == 1 else 0)
+data10['is_two'] = data10['runs_off_bat'].apply(lambda x: 1 if x == 2 else 0)
+data10['is_three'] = data10['runs_off_bat'].apply(lambda x: 1 if x == 3 else 0)
+data10['is_four'] = data10['runs_off_bat'].apply(lambda x: 1 if x == 4 else 0)
+data10['is_six'] = data10['runs_off_bat'].apply(lambda x: 1 if x == 6 else 0)
+
+bowlers_wicket = ['bowled', 'caught', 'caught and bowled', 'lbw',
+       'stumped', 'hit wicket']
+
+any_wicket = ['caught', 'bowled', 'run out', 'lbw', 'caught and bowled', 'stumped',
+ 'retired hurt', 'hit wicket', 'obstructing the field', 'retired out']
+
+data10['player_out'] = data10['wicket_type'].apply(lambda x: 1 if x in any_wicket else 0)
+
+batting_record_by_innings = data10
+
+# Additional Columns
+
+dots = batting_record_by_innings.groupby(['striker', 'bowling_team', 'start_date'])['is_dot'].sum().reset_index().rename(columns = {'is_dot': 'dots'})
+fours = batting_record_by_innings.groupby(['striker', 'bowling_team', 'start_date'])['is_four'].sum().reset_index().rename(columns = {'is_four': 'fours'})
+sixes = batting_record_by_innings.groupby(['striker', 'bowling_team', 'start_date'])['is_six'].sum().reset_index().rename(columns = {'is_six': 'sixes'})
+
+runs_scored = batting_record_by_innings.groupby(['striker', 'bowling_team', 'start_date'])['runs_off_bat'].sum().reset_index().rename(columns={'runs_off_bat': 'runs_scored'})
+balls_faced = batting_record_by_innings.groupby(['striker', 'bowling_team', 'start_date'])['runs_off_bat'].count().reset_index().rename(columns={'runs_off_bat': 'balls_faced'})
+player_out = batting_record_by_innings.groupby(['striker', 'bowling_team', 'start_date'])['player_out'].sum().reset_index()
+innings = batting_record_by_innings.groupby(['striker', 'bowling_team', 'start_date'])['match_id'].apply(lambda x: len(list(np.unique(x)))).reset_index().rename(columns = {'match_id': 'innings'})
+
+
+batting_by_innings = pd.merge(innings, runs_scored, on=['striker', 'bowling_team', 'start_date']).merge(
+    balls_faced, on=['striker', 'bowling_team', 'start_date']).merge(
+        player_out, on=['striker', 'bowling_team', 'start_date']).merge(
+            dots, on=['striker', 'bowling_team', 'start_date']).merge(
+                fours, on=['striker', 'bowling_team', 'start_date']).merge(
+                    sixes, on=['striker', 'bowling_team', 'start_date'])
+
+batting_by_innings['batting_SR'] = 100 * batting_by_innings['runs_scored'] / batting_by_innings['balls_faced']
+batting_by_innings['dot_percentage'] = 100 * batting_by_innings['dots'] / batting_by_innings['balls_faced']
+
+batting_by_innings = batting_by_innings.sort_values(by='start_date', ascending=False)
+
+# print(batting_by_innings.columns)
+
+batting_by_innings['player_dismissed'] = batting_by_innings['player_out'].apply(lambda x: 'Yes' if x == 1 else 'No')
+
+batting_by_innings = batting_by_innings[['striker', 'bowling_team', 'start_date', 'runs_scored',
+       'balls_faced', 'player_dismissed', 'dots', 'fours', 'sixes', 'batting_SR',
+       'dot_percentage']]
+
+
+
+
+
+
 
 ##################
 # Bowling Record #
@@ -377,6 +439,53 @@ bowling_by_year['bowling_AVG'] = bowling_by_year['runs_conceded'] / bowling_by_y
 
 
 
+############################
+# Bowling Record by Innings#
+############################
+# df = pd.read_csv('all_ipl_data.csv')
+
+data9 = df.copy()
+
+
+data9['is_four'] = data9['runs_off_bat'].apply(lambda x: 1 if x == 4 else 0)
+data9['is_six'] = data9['runs_off_bat'].apply(lambda x: 1 if x == 6 else 0)
+
+data9['total_runs'] = data9['runs_off_bat'] + data9['extras']
+
+bowlers_wicket = ['bowled', 'caught', 'caught and bowled', 'lbw',
+       'stumped', 'hit wicket']
+
+data9['bowlers_wicket'] = data9['wicket_type'].apply(lambda x: 1 if x in bowlers_wicket else 0)
+
+bowling_record_by_innings = data9
+
+# Additional Columns
+
+dots = bowling_record_by_innings.groupby(['bowler', 'batting_team', 'start_date'])['is_dot'].sum().reset_index().rename(columns = {'is_dot': 'dots'})
+fours = bowling_record_by_innings.groupby(['bowler', 'batting_team', 'start_date'])['is_four'].sum().reset_index().rename(columns = {'is_four': 'fours'})
+sixes = bowling_record_by_innings.groupby(['bowler', 'batting_team', 'start_date'])['is_six'].sum().reset_index().rename(columns = {'is_six': 'sixes'})
+
+runs_conceded = bowling_record_by_innings.groupby(['bowler', 'batting_team', 'start_date'])['total_runs'].sum().reset_index().rename(columns={'total_runs': 'runs_conceded'})
+balls_bowled = bowling_record_by_innings.groupby(['bowler', 'batting_team', 'start_date'])['runs_off_bat'].count().reset_index().rename(columns={'runs_off_bat': 'balls_bowled'})
+wickets_taken = bowling_record_by_innings.groupby(['bowler', 'batting_team', 'start_date'])['bowlers_wicket'].sum().reset_index().rename(columns={'bowlers_wicket': 'wickets_taken'})
+innings = bowling_record_by_innings.groupby(['bowler', 'batting_team', 'start_date'])['match_id'].apply(lambda x: len(list(np.unique(x)))).reset_index()
+
+bowling_by_innings = pd.merge(innings, runs_conceded, on=['bowler', 'batting_team', 'start_date']).merge(
+    balls_bowled, on=['bowler', 'batting_team', 'start_date']).merge(
+        wickets_taken, on=['bowler', 'batting_team', 'start_date']).merge(
+            dots, on=['bowler', 'batting_team', 'start_date']).merge(
+                fours, on=['bowler', 'batting_team', 'start_date']).merge(
+                    sixes, on=['bowler', 'batting_team', 'start_date'])
+
+bowling_by_innings['Economy'] = 6 * bowling_by_innings['runs_conceded'] / bowling_by_innings['balls_bowled']
+bowling_by_innings['bowling_AVG'] = bowling_by_innings['runs_conceded'] / bowling_by_innings['wickets_taken']
+
+bowling_by_innings = bowling_by_innings.sort_values(by='start_date', ascending=False)
+
+bowling_by_innings = bowling_by_innings[['bowler', 'batting_team', 'start_date', 'runs_conceded',
+       'balls_bowled', 'wickets_taken', 'dots', 'Economy']]
+
+
 ######################
 # Adding to Database #
 ######################
@@ -403,22 +512,28 @@ def query_database(conn, query):
 
 
 # csv_files = ['bat_vs_venue.csv', 'bat_vs_team.csv', 'matchups.csv', 'batting_record.csv', 'bowling_record.csv']
-dataframes = [bat_vs_venue, bat_vs_team, matchup, batting, bowling, batting_by_year, bowling_by_year]
-table_names = ['batter_vs_venue', 'batter_vs_team', 'batter_vs_bowler', 'batting_record', 'bowling_record', 'batting_record_by_year', 'bowling_record_by_year']
+dataframes = [bat_vs_venue, bat_vs_team, matchup, batting, bowling, batting_by_year, bowling_by_year, batting_record_by_innings, bowling_record_by_innings]
+table_names = ['batter_vs_venue', 'batter_vs_team', 'batter_vs_bowler', 'batting_record', 'bowling_record', 'batting_record_by_year', 'bowling_record_by_year', 'batting_record_by_innings', 'bowling_record_by_innings']
 table_columns = [
     ['striker', 'stadium', 'innings', 'runs_scored', 'balls_faced', 'wickets_taken', 'dots', 'fours', 'sixes',
      'fifties', 'hundreds', 'batting_AVG', 'batting_SR', 'dot_percentage'],  # Columns for batter_vs_venue
     ['striker', 'bowling_team', 'innings', 'runs_scored', 'balls_faced', 'wickets_taken', 'dots', 'fours', 'sixes',
      'fifties', 'hundreds', 'batting_AVG', 'batting_SR', 'dot_percentage'],  # Columns for batter_vs_team
-    ['striker', 'bowler', 'innings', 'runs_scored', 'wickets_taken', 'batting_SR', 'dot_percentage'],  # Columns for batter_vs_bowler
-    ['striker', 'innings', 'runs_scored', 'balls_faced', 'wickets_taken,dots',
+    ['striker', 'bowler', 'innings', 'runs_scored', 'balls_faced', 'wickets_taken', 'dots', 'fours', 'sixes',
+     'batting_SR', 'dot_percentage', 'inning_vs_dismissal'],  # Columns for batter_vs_bowler
+    ['striker', 'innings', 'runs_scored', 'balls_faced', 'wickets_taken', 'dots',
      'fours', 'fifties', 'hundreds', 'sixes', 'batting_SR', 'dot_percentage', 'batting_AVG'], # Columns for batting_record
     ['bowler', 'innings', 'runs_conceded', 'balls_bowled', 'wickets_taken',
      'dots', 'fours', 'sixes', 'Economy', 'bowling_AVG'], # Columns for bowling_record
-    ['striker', 'year', 'innings', 'runs_scored', 'balls_faced', 'wickets_taken,dots',
+    ['striker', 'year', 'innings', 'runs_scored', 'balls_faced', 'wickets_taken', 'dots',
      'fours', 'fifties', 'hundreds', 'sixes', 'batting_SR', 'dot_percentage', 'batting_AVG'], # Columns for batting_record_by_year
     ['bowler', 'year', 'innings', 'runs_conceded', 'balls_bowled', 'wickets_taken',
-     'dots', 'fours', 'sixes', 'Economy', 'bowling_AVG'] # Columns for bowling_record_by_year
+     'dots', 'fours', 'sixes', 'Economy', 'bowling_AVG'],  # Columns for bowling_record_by_year
+    ['striker', 'bowling_team', 'start_date', 'runs_scored',
+       'balls_faced', 'player_dismissed', 'dots', 'fours', 'sixes', 'batting_SR', 'dot_percentage'], # Columns for batting_record_by_innings
+    ['bowler', 'batting_team', 'start_date', 'runs_conceded',
+    'balls_bowled', 'wickets_taken', 'dots', 'Economy'] # Columns for bowling_record_by_innings
+
 ]
 
 # Connect to SQLite Database
