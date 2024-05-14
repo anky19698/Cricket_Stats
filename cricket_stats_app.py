@@ -90,6 +90,16 @@ def filter_database(user_input):
     striker, year, innings,runs_scored,balls_faced,wickets_taken,dots,fours, fifties, hundreds, sixes,batting_SR,dot_percentage,batting_AVG
     A Ashish Reddy, 2022, 23,280,196,13,61,16,2,1,15,142.85714285714286,31.122448979591837,21.53846153846154
 
+    TABLE: batting_record_by_innings
+
+    striker, bowling_team, start_date, runs_scored, balls_faced, player_dismissed, dots, fours, sixes, batting_SR, dot_percentage
+    V Kohli, Punjab Kings, 2024-05-04, 21, 21, Yes, 2, 5, 6, 100, 20
+
+    TABLE: bowling_record_by_innings
+
+    bowler, batting_team, start_date, runs_conceded, balls_bowled, wickets_taken, dots, Economy
+    A Ashish Reddy, Punjab Kings, 2024-05-04, 21, 21, 2, 5, 6
+
     """
 
     # user_input = "kl rahul vs jasprit bumrah Record"
@@ -123,7 +133,13 @@ def filter_database(user_input):
     Expected SQL Output:
     Select bowler, innings, wickets_taken, dots, Economy From bowling_record where bowler LIKE "J% Bumrah"
 
-    4) most sixes hit by player: In this case, you should apply sort in SQL query, and retrieve only top 10 rows 
+    4) rohit Sharma scores in last 7 innings:
+    Select * From batting_record_by_innings where striker LIKE "R% Sharma" LIMIT 7
+
+    4) Jasprit Bumrah bowling economy in recent innings:
+    Select * From bowling_record_by_innings where bowler LIKE "J% Bumrah" LIMIT 5
+    
+    5) most sixes hit by player: In this case, you should apply sort in SQL query, and retrieve only top 10 rows 
 
     Remember, only use filters or sorts in the SQL query, and do not use any type of JOIN operations.
 
