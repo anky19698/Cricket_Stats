@@ -165,6 +165,7 @@ def analyze_result(df, user_input):
     Based on Previous User Input: {user_input}, You have Successfully got a resulting Data in Form of Python Dictionary: {df_dict}
     Analyze this Data about cricket(IPL) Player records and Briefly Summerize.
     Explain in Cricket Terms dont include Technical Terms!
+    If Dataframe is Empty, Ask Them to Try Again!
     """
 
     
