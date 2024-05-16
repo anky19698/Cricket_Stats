@@ -144,7 +144,7 @@ def filter_database(user_input):
     5) most sixes hit by player: In this case, you should apply sort in SQL query, and retrieve only top 10 rows 
 
     6) Virat Kohli Record on 18 May in all Years:
-    Expected SQL Output: here 18 may means day = 18 and month = 5
+    Expected SQL Output:
     Select * from batting_record_by_innings where striker LIKE "V% Kohli" AND AND EXTRACT(MONTH FROM start_date) = 5 AND EXTRACT(DAY FROM start_date) = 18;
     
     
