@@ -551,6 +551,8 @@ for dataframe, table_name, columns in zip(dataframes, table_names, table_columns
     insert_data(conn, table_name, csv_data)
 
 
+latest_date = pd.to_datetime(df['start_date']).max()
 
+print(latest_date)
 # Close database connection
 conn.close()
