@@ -134,13 +134,20 @@ def filter_database(user_input):
     Select bowler, innings, wickets_taken, dots, Economy From bowling_record where bowler LIKE "J% Bumrah"
 
     4) rohit Sharma scores in last 7 innings:
+    Expected SQL Output:
     Select * From batting_record_by_innings where striker LIKE "R% Sharma" LIMIT 7
 
     4) Jasprit Bumrah bowling economy in recent innings:
+    Expected SQL Output:
     Select * From bowling_record_by_innings where bowler LIKE "J% Bumrah" LIMIT 5
     
     5) most sixes hit by player: In this case, you should apply sort in SQL query, and retrieve only top 10 rows 
 
+    6) Virat Kohli Record on 18 May in all Years:
+    Expected SQL Output: here 18 may means day = 18 and month = 5
+    Select * from batting_record_by_innings where striker LIKE "V% Kohli" AND AND EXTRACT(MONTH FROM start_date) = 5 AND EXTRACT(DAY FROM start_date) = 18;
+    
+    
     Remember, only use filters or sorts in the SQL query, and do not use any type of JOIN operations.
 
     Ensure that the SQL query is written only for the relevant table and includes columns and table names only from the Table Information.
