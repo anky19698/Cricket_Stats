@@ -2,6 +2,8 @@ FROM python:3
 
 WORKDIR /app
 
+EXPOSE 8080
+
 COPY . ./
 
 RUN pip3 install -r requirements.txt
