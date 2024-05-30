@@ -9,9 +9,10 @@ import certifi
 # Database for Storing Chats
 ca = certifi.where()
 
-mongo_uri = st.secrets['mongo_uri']
-key = st.secrets['key']
-
+# mongo_uri = st.secrets['mongo_uri']
+# key = st.secrets['key']
+key = 'AIzaSyAamovnBF6RG3AfBOJU3xejPlyC9qWXAVo'
+mongo_uri = "mongodb+srv://test:test@cluster0.ezcug4b.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
 def load_database_collection(mongo_uri):
     # Connect to MongoDB
