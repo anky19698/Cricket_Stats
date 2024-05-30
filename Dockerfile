@@ -6,4 +6,4 @@ COPY . ./
 
 RUN pip3 install -r requirement.txt
 
-ENTRYPOINT ["streamlit", "run", "app.py", "--server.port=8080", "--server.address=0.0.0.0"]
+ENTRYPOINT ["streamlit", "run", "cricket_stats_app.py", "--server.port=8080", "--server.address=0.0.0.0"]
