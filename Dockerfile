@@ -1,5 +1,7 @@
 FROM python:3
 
+ENV PORT=8080
+
 WORKDIR /app
 
 EXPOSE 8080
