@@ -6,6 +6,7 @@ import sqlite3
 from pymongo.mongo_client import MongoClient
 import certifi
 
+#
 # Database for Storing Chats
 ca = certifi.where()
 
