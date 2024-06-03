@@ -25,9 +25,20 @@ data1 = df.copy()
 # Players Team
 data1['played_for'] = data1['batting_team']
 
+any_wicket = ['caught', 'bowled', 'run out', 'lbw', 'caught and bowled', 'stumped',
+ 'retired hurt', 'hit wicket', 'obstructing the field', 'retired out']
+
+data1['player_out'] = data1['wicket_type'].apply(lambda x: 1 if x in any_wicket else 0)
+
+
 runs_scored = data1.groupby(['striker', 'played_for', 'bowling_team', 'format'])['runs_off_bat'].sum().reset_index().rename(columns={'runs_off_bat': 'runs_scored'})
 balls_faced = data1.groupby(['striker', 'played_for', 'bowling_team', 'format'])['runs_off_bat'].count().reset_index().rename(columns={'runs_off_bat': 'balls_faced'})
-wickets_taken = data1.groupby(['striker', 'played_for', 'bowling_team', 'format'])['bowlers_wicket'].sum().reset_index().rename(columns={'bowlers_wicket': 'wickets_taken'})
+
+data1['player_got_out'] = data1['player_dismissed']
+wickets_taken = data1.groupby(['player_got_out', 'played_for', 'bowling_team', 'format'])['player_dismissed'].count().reset_index()
+wickets_taken['striker'] = wickets_taken['player_got_out']
+wickets_taken.drop(columns=['player_got_out'], inplace=True)
+
 innings = data1.groupby(['striker', 'played_for', 'bowling_team', 'format'])['match_id'].apply(lambda x: len(list(np.unique(x)))).reset_index().rename(columns = {'match_id': 'innings'})
 
 
@@ -61,7 +72,7 @@ bat_vs_team = pd.merge(innings, runs_scored, on=['striker', 'played_for', 'bowli
 
 
 # Additional Columns
-bat_vs_team['batting_AVG'] = bat_vs_team.apply(lambda x: x['runs_scored'] if x['wickets_taken'] == 0 else x['runs_scored']/x['wickets_taken'], axis=1)
+bat_vs_team['batting_AVG'] = bat_vs_team.apply(lambda x: x['runs_scored'] if x['player_dismissed'] == 0 else x['runs_scored']/x['player_dismissed'], axis=1)
 bat_vs_team['batting_SR'] = 100 * bat_vs_team['runs_scored'] / bat_vs_team['balls_faced']
 bat_vs_team['dot_percentage'] = 100 * bat_vs_team['dots'] / bat_vs_team['balls_faced']
 
