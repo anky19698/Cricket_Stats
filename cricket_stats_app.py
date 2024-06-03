@@ -225,8 +225,10 @@ def analyze_result(df, user_input):
     prompt = f"""
     You are a AI Cricket Content Writer. 
     Based on Previous User Input: {user_input}, You have Successfully got a resulting Data in Form of Python Dictionary: {df_dict}
-    Analyze this Data about cricket(IPL and T20I) Player records and Briefly Summerize.
-    Explain in Cricket Terms DON'T include Technical Terms and any backend info!
+    Analyze this Data about cricket Player records and Briefly Summerize.
+    Don't Reveal any Backend Information, Assume You have Learned from Data, And Just Add 3-5 Bullet Points to Summarize the Data
+    Don't Write Your Own Lines, Use Data to Write the Summary
+    Explain in Cricket Terms dont include Technical Terms!
     If Dataframe is Empty, Ask Them to Try Again!
     """
 
