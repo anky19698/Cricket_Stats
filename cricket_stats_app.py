@@ -58,59 +58,72 @@ def filter_database(user_input):
 
     TABLE: batter_vs_venue
 
-    striker,stadium,innings,runs_scored,balls_faced,wickets_taken,dots,fours,sixes,fifties,hundreds,batting_AVG,batting_SR,dot_percentage
-    A Ashish Reddy,Arun Jaitley Stadium,1,16,9,1,1,2,0,0,0,16.0,177.77777777777777,11.11111111111111
+        striker, played_for, stadium, innings, runs_scored, balls_faced, dots, fours, sixes, fifties, hundreds, batting_AVG, batting_SR, dot_percentage, format
+        A Ashish Reddy, India, Arun Jaitley Stadium, 1, 16, 9, 1, 1, 2, 0, 0, 16.0, 177.77777777777777, 11.11111111111111, T20I
 
     TABLE: batter_vs_team
-
-    striker,bowling_team,innings,runs_scored,balls_faced,wickets_taken,dots,fours,sixes,fifties,hundreds,batting_AVG,batting_SR,dot_percentage
-    A Ashish Reddy,Chennai Super Kings,3,45,25,2,8,3,3,0,0,22.5,180.0,32.0
-
+    
+        striker, played_for, bowling_team, innings, runs_scored, balls_faced, dots, fours, sixes, fifties, hundreds, batting_AVG, batting_SR, dot_percentage, format
+        A Ashish Reddy, India, Chennai Super Kings, 3, 45, 25, 2, 3, 3, 0, 0, 22.5, 180.0, 32.0, T20I
+    
     TABLE: batter_vs_bowler
-
-    striker,bowler,innings,runs_scored,wickets_taken,batting_SR,dot_percentage
-    A Ashish Reddy,A Nehra,2,7,1,77.77777777777777,55.55555555555556
-
+    
+        striker, bowler, innings, runs_scored, wickets_taken, batting_SR, dot_percentage, format
+        A Ashish Reddy, A Nehra, 2, 7, 1, 77.77777777777777, 55.55555555555556, T20I
+    
     TABLE: bowling_record
-
-    bowler,innings,runs_conceded,balls_bowled,wickets_taken,dots,fours,sixes,Economy,bowling_AVG
-    A Ashish Reddy,20,400,270,18,89,26,20,8.88888888888889,22.22222222222222
-
+    
+        bowler, played_for, innings, runs_conceded, balls_bowled, wickets_taken, dots, fours, sixes, Economy, bowling_AVG, format
+        A Ashish Reddy, India, 20, 400, 270, 18, 89, 26, 20, 8.88888888888889, 22.22222222222222, T20I
+    
     TABLE: batting_record
-
-    striker,innings,runs_scored,balls_faced,wickets_taken,dots,fours,fifties,hundreds,sixes,batting_SR,dot_percentage,batting_AVG
-    A Ashish Reddy,23,280,196,13,61,16,2,1,15,142.85714285714286,31.122448979591837,21.53846153846154
-
+    
+        striker, played_for, innings, runs_scored, balls_faced, dots, fours, fifties, hundreds, sixes, batting_SR, dot_percentage, batting_AVG, format
+        A Ashish Reddy, India, 23, 280, 196, 13, 61, 16, 1, 15, 142.85714285714286, 31.122448979591837, 21.53846153846154, T20I
+    
     TABLE: bowling_record_by_year
-
-    bowler, year, innings,runs_conceded,balls_bowled,wickets_taken,dots,fours,sixes,Economy,bowling_AVG
-    A Ashish Reddy, 2022, 20,400,270,18,89,26,20,8.88888888888889,22.22222222222222
-
+    
+        bowler, played_for, year, innings, runs_conceded, balls_bowled, wickets_taken, dots, fours, sixes, Economy, bowling_AVG, format
+        A Ashish Reddy, India, 2022, 20, 400, 270, 18, 89, 26, 20, 8.88888888888889, 22.22222222222222, T20I
+    
     TABLE: batting_record_by_year
-
-    striker, year, innings,runs_scored,balls_faced,wickets_taken,dots,fours, fifties, hundreds, sixes,batting_SR,dot_percentage,batting_AVG
-    A Ashish Reddy, 2022, 23,280,196,13,61,16,2,1,15,142.85714285714286,31.122448979591837,21.53846153846154
-
+    
+        striker, played_for, year, innings, runs_scored, balls_faced, dots, fours, fifties, hundreds, sixes, batting_SR, dot_percentage, batting_AVG, format
+        A Ashish Reddy, India, 2022, 23, 280, 196, 13, 61, 16, 1, 15, 142.85714285714286, 31.122448979591837, 21.53846153846154, T20I
+    
     TABLE: batting_record_by_innings
-
-    striker, bowling_team, start_date, runs_scored, balls_faced, player_dismissed, dots, fours, sixes, batting_SR, dot_percentage
-    V Kohli, Punjab Kings, 2024-05-04, 21, 21, Yes, 2, 5, 6, 100, 20
-
+    
+        striker, played_for, bowling_team, start_date, runs_scored, balls_faced, player_dismissed, dots, fours, sixes, batting_SR, dot_percentage, format
+        V Kohli, India, Punjab Kings, 2024-05-04, 21, 21, Yes, 2, 5, 6, 100, 20, T20I
+    
     TABLE: bowling_record_by_innings
+    
+        bowler, played_for, batting_team, start_date, runs_conceded, balls_bowled, wickets_taken, dots, Economy, format
+        A Ashish Reddy, India, Punjab Kings, 2024-05-04, 21, 21, 2, 5, 6, T20I
+    
+    TABLE: bowler_vs_team
+    
+        bowler, played_for, batting_team, runs_conceded, balls_bowled, wickets_taken, dots, Economy, format
+        A Ashish Reddy, India, Punjab Kings, 21, 21, 2, 5, 6, T20I
 
-    bowler, batting_team, start_date, runs_conceded, balls_bowled, wickets_taken, dots, Economy
-    A Ashish Reddy, Punjab Kings, 2024-05-04, 21, 21, 2, 5, 6
+    TABLE: bowler_vs_venue
+    
+        bowler, played_for, stadium, runs_conceded, balls_bowled, wickets_taken, dots, Economy, format
+        A Ashish Reddy, India, Wankhede Stadium, 21, 21, 2, 5, 6, T20I
 
     """
 
     # user_input = "kl rahul vs jasprit bumrah Record"
 
     input_prompt = f"""
-    You are a Smart AI Cricket Analyst, Working on IPL(Indian Premier League) Data
+    You are a Smart AI Cricket Analyst, Working on IPL(Indian Premier League) and T20I(T20 Internationals) Data
 
     You're tasked with generating a SQL query based on the user input to filter cricket data from the database. Your goal is to extract Player Names, Stadium Names, and Team Names from the user input and filter accordingly.
 
     Remember, each row in the database represents a Ball Event, and you should only use the specified columns to construct the SQL query.
+
+    Check if Format is mentioned in query, Like IPL or T20I. If Mentioned, then Apply Filter by format in SQL query also.
+    If not mentioned, then ignore format filter.
 
     Here's the Database Table Information: {table_info}
 
@@ -127,27 +140,52 @@ def filter_database(user_input):
     2) virat kohli runs in ipl 2024
 
     Expected SQL Output:
-    Select striker, innings, year, runs_scored, batting_SR, batting_AVG, dot_percentage, fifties, hundreds, sixes, fours From batting_record_by_year where striker LIKE "V% Kohli" AND year=2024
+    Select * from From batting_record_by_year where striker LIKE "V% Kohli" AND year=2024 AND format = 'IPL'
 
     3) jasprit bumrah wickets in ipl
 
     Expected SQL Output:
-    Select bowler, innings, wickets_taken, dots, Economy From bowling_record where bowler LIKE "J% Bumrah"
+    Select bowler, played_for, innings, wickets_taken, dots, Economy From bowling_record where bowler LIKE "J% Bumrah" AND format = 'IPL'
 
-    4) rohit Sharma scores in last 7 innings:
+    4) rohit Sharma scores in last 7 innings in t20i:
     Expected SQL Output:
-    Select * From batting_record_by_innings where striker LIKE "R% Sharma" LIMIT 7
+    Select * From batting_record_by_innings where striker LIKE "R% Sharma" LIMIT 7 AND format = 'T20I'
 
     4) Jasprit Bumrah bowling economy in recent innings:
     Expected SQL Output:
     Select * From bowling_record_by_innings where bowler LIKE "J% Bumrah" LIMIT 5
-    
+
     5) most sixes hit by player: In this case, you should apply sort in SQL query, and retrieve only top 10 rows 
 
     6) Virat Kohli Record on 18 May in all Years:
     Expected SQL Output:
     Select * from batting_record_by_innings where striker LIKE "V% Kohli" AND AND EXTRACT(MONTH FROM start_date) = 5 AND EXTRACT(DAY FROM start_date) = 18;
     
+    7) virat Kohli vs pakistan
+
+    Expected SQL Output:
+    Select * From batter_vs_team where striker LIKE "V% Kohli" AND bowling_team LIKE "Pakistan"
+    
+    8) Rohit Sharma Runs for Mumbai Indians
+
+    Expected SQL Output:
+    Select * From batting_record where striker LIKE "RG% Sharma" AND played_for LIKE "Mumbai Indians"
+    
+    9) Most Wickets for rajasthan royals
+
+    Expected SQL Output:
+    Select bowler, played_for, wickets, innings, Economy From bowling_record where played_for LIKE "Rajasthan Royals" Order By wickets_taken DESC
+    
+    10) Rohit Sharma Batting Record
+    
+    Expected SQL Output:
+    Select * From batting_record where striker LIKE "RG% Sharma"
+
+    11) Most Wickets By Indian Player Against Pakistan in T20I
+    
+    Expected SQL Output:
+    Select * From bowler_vs_team where played_for LIKE "India" AND batting_team LIKE "Pakistan" AND format = "T20I" order by wickets_taken
+     
     
     Remember, only use filters or sorts in the SQL query, and do not use any type of JOIN operations.
 
@@ -187,8 +225,8 @@ def analyze_result(df, user_input):
     prompt = f"""
     You are a AI Cricket Content Writer. 
     Based on Previous User Input: {user_input}, You have Successfully got a resulting Data in Form of Python Dictionary: {df_dict}
-    Analyze this Data about cricket(IPL) Player records and Briefly Summerize.
-    Explain in Cricket Terms dont include Technical Terms!
+    Analyze this Data about cricket(IPL and T20I) Player records and Briefly Summerize.
+    Explain in Cricket Terms DON'T include Technical Terms and any backend info!
     If Dataframe is Empty, Ask Them to Try Again!
     """
 
