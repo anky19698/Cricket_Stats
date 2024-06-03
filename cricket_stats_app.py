@@ -131,60 +131,62 @@ def filter_database(user_input):
     [initial Letter of firstName + any letters in between + LastName]
     Example: For a player named Sunil Narine, use "S% Narine"
 
-    Example user input:
+
+
     1) virat Kohli vs jasprit bumrah Record
 
     Expected SQL Output:
-    Select * From batter_vs_bowler where striker LIKE "V% Kohli" AND bowler LIKE "J% Bumrah"
-
+    select * from batter_vs_bowler where lower(striker) like "v% kohli" and lower(bowler) like "j% bumrah"
+    
     2) virat kohli runs in ipl 2024
-
+    
     Expected SQL Output:
-    Select * from From batting_record_by_year where striker LIKE "V% Kohli" AND year=2024 AND format = 'IPL'
-
+    select * from batting_record_by_year where lower(striker) like "v% kohli" and year=2024 and lower(format) = 'ipl'
+    
     3) jasprit bumrah wickets in ipl
-
+    
     Expected SQL Output:
-    Select bowler, played_for, innings, wickets_taken, dots, Economy From bowling_record where bowler LIKE "J% Bumrah" AND format = 'IPL'
-
-    4) rohit Sharma scores in last 7 innings in t20i:
+    select bowler, played_for, innings, wickets_taken, dots, economy from bowling_record where lower(bowler) like "j% bumrah" and lower(format) = 'ipl'
+    
+    4) rohit Sharma scores in last 7 innings in t20i
+    
     Expected SQL Output:
-    Select * From batting_record_by_innings where striker LIKE "R% Sharma" LIMIT 7 AND format = 'T20I'
-
-    4) Jasprit Bumrah bowling economy in recent innings:
+    select * from batting_record_by_innings where lower(striker) like "r% sharma" limit 7 and lower(format) = 't20i'
+    
+    5) jasprit bumrah bowling economy in recent innings
+    
     Expected SQL Output:
-    Select * From bowling_record_by_innings where bowler LIKE "J% Bumrah" LIMIT 5
-
-    5) most sixes hit by player: In this case, you should apply sort in SQL query, and retrieve only top 10 rows 
-
-    6) Virat Kohli Record on 18 May in all Years:
+    select * from bowling_record_by_innings where lower(bowler) like "j% bumrah" limit 5
+    
+    6) virat Kohli Record on 18 May in all Years
+    
     Expected SQL Output:
-    Select * from batting_record_by_innings where striker LIKE "V% Kohli" AND AND EXTRACT(MONTH FROM start_date) = 5 AND EXTRACT(DAY FROM start_date) = 18;
+    select * from batting_record_by_innings where lower(striker) like "v% kohli" and extract(month from start_date) = 5 and extract(day from start_date) = 18
     
     7) virat Kohli vs pakistan
-
-    Expected SQL Output:
-    Select * From batter_vs_team where striker LIKE "V% Kohli" AND bowling_team LIKE "Pakistan"
-    
-    8) Rohit Sharma Runs for Mumbai Indians
-
-    Expected SQL Output:
-    Select * From batting_record where striker LIKE "RG% Sharma" AND played_for LIKE "Mumbai Indians"
-    
-    9) Most Wickets for rajasthan royals
-
-    Expected SQL Output:
-    Select bowler, played_for, wickets, innings, Economy From bowling_record where played_for LIKE "Rajasthan Royals" Order By wickets_taken DESC
-    
-    10) Rohit Sharma Batting Record
     
     Expected SQL Output:
-    Select * From batting_record where striker LIKE "RG% Sharma"
-
-    11) Most Wickets By Indian Player Against Pakistan in T20I
+    select * from batter_vs_team where lower(striker) like "v% kohli" and lower(bowling_team) like "pakistan"
+    
+    8) rohit Sharma Runs for Mumbai Indians
     
     Expected SQL Output:
-    Select * From bowler_vs_team where played_for LIKE "India" AND batting_team LIKE "Pakistan" AND format = "T20I" order by wickets_taken
+    select * from batting_record where lower(striker) like "rg% sharma" and lower(played_for) like "mumbai indians"
+    
+    9) most Wickets for rajasthan royals
+    
+    Expected SQL Output:
+    select bowler, played_for, wickets, innings, economy from bowling_record where lower(played_for) like "rajasthan royals" order by wickets_taken desc
+    
+    10) rohit Sharma Batting Record
+    
+    Expected SQL Output:
+    select * from batting_record where lower(striker) like "rg% sharma"
+    
+    11) most Wickets By Indian Player Against Pakistan in T20I
+    
+    Expected SQL Output:
+    select * from bowler_vs_team where lower(played_for) like "india" and lower(batting_team) like "pakistan" and lower(format) = "t20i" order by wickets_taken
      
     
     Remember, only use filters or sorts in the SQL query, and do not use any type of JOIN operations.
