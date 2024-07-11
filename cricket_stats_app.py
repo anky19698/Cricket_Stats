@@ -5,6 +5,9 @@ import json
 import sqlite3
 from pymongo.mongo_client import MongoClient
 import certifi
+import os
+from langchain_huggingface import HuggingFaceEndpoint
+import re
 
 #
 # Database for Storing Chats
@@ -12,7 +15,194 @@ ca = certifi.where()
 
 mongo_uri = st.secrets['mongo_uri']
 key = st.secrets['key']
+hf_api_token = st.secrets['hf_token']
 
+
+################
+# Hugging Face #
+################
+
+def get_hf_model():
+    # Set up Hugging Face Token
+    hf_token = hf_api_token
+    os.environ['HUGGINGFACEHUB_API_TOKEN'] = hf_token
+
+    model_id = "mistralai/Mistral-7B-Instruct-v0.3"
+    # model_id = "microsoft/tapex-large-sql-execution"
+    model = HuggingFaceEndpoint(
+        endpoint_url=model_id,
+        task="text-generation",
+        temperature= 1,
+        max_new_tokens= 1000,
+        token=hf_token
+    )
+    return model
+
+
+def get_sql_query(user_input):
+    table_info = """
+
+    TABLE: batter_vs_venue
+
+        striker, played_for, stadium, innings, runs_scored, balls_faced, dots, fours, sixes, fifties, hundreds, batting_AVG, batting_SR, dot_percentage, format
+        A Ashish Reddy, India, Arun Jaitley Stadium, 1, 16, 9, 1, 1, 2, 0, 0, 16.0, 177.77777777777777, 11.11111111111111, T20I
+
+    TABLE: batter_vs_team
+    
+        striker, played_for, bowling_team, innings, runs_scored, balls_faced, dots, fours, sixes, fifties, hundreds, batting_AVG, batting_SR, dot_percentage, format
+        A Ashish Reddy, India, Chennai Super Kings, 3, 45, 25, 2, 3, 3, 0, 0, 22.5, 180.0, 32.0, T20I
+    
+    TABLE: batter_vs_bowler
+    
+        striker, bowler, innings, runs_scored, wickets_taken, batting_SR, dot_percentage, format
+        A Ashish Reddy, A Nehra, 2, 7, 1, 77.77777777777777, 55.55555555555556, T20I
+    
+    TABLE: bowling_record
+    
+        bowler, played_for, innings, runs_conceded, balls_bowled, wickets_taken, dots, fours, sixes, Economy, bowling_AVG, format
+        A Ashish Reddy, India, 20, 400, 270, 18, 89, 26, 20, 8.88888888888889, 22.22222222222222, T20I
+    
+    TABLE: batting_record
+    
+        striker, played_for, innings, runs_scored, balls_faced, dots, fours, fifties, hundreds, sixes, batting_SR, dot_percentage, batting_AVG, format
+        A Ashish Reddy, India, 23, 280, 196, 13, 61, 16, 1, 15, 142.85714285714286, 31.122448979591837, 21.53846153846154, T20I
+    
+    TABLE: bowling_record_by_year
+    
+        bowler, played_for, year, innings, runs_conceded, balls_bowled, wickets_taken, dots, fours, sixes, Economy, bowling_AVG, format
+        A Ashish Reddy, India, 2022, 20, 400, 270, 18, 89, 26, 20, 8.88888888888889, 22.22222222222222, T20I
+    
+    TABLE: batting_record_by_year
+    
+        striker, played_for, year, innings, runs_scored, balls_faced, dots, fours, fifties, hundreds, sixes, batting_SR, dot_percentage, batting_AVG, format
+        A Ashish Reddy, India, 2022, 23, 280, 196, 13, 61, 16, 1, 15, 142.85714285714286, 31.122448979591837, 21.53846153846154, T20I
+    
+    TABLE: batting_record_by_innings
+    
+        striker, played_for, bowling_team, start_date, runs_scored, balls_faced, player_dismissed, dots, fours, sixes, batting_SR, dot_percentage, format
+        V Kohli, India, Punjab Kings, 2024-05-04, 21, 21, Yes, 2, 5, 6, 100, 20, T20I
+    
+    TABLE: bowling_record_by_innings
+    
+        bowler, played_for, batting_team, start_date, runs_conceded, balls_bowled, wickets_taken, dots, Economy, format
+        A Ashish Reddy, India, Punjab Kings, 2024-05-04, 21, 21, 2, 5, 6, T20I
+    
+    TABLE: bowler_vs_team
+    
+        bowler, played_for, batting_team, runs_conceded, balls_bowled, wickets_taken, dots, Economy, format
+        A Ashish Reddy, India, Punjab Kings, 21, 21, 2, 5, 6, T20I
+
+    TABLE: bowler_vs_venue
+    
+        bowler, played_for, stadium, runs_conceded, balls_bowled, wickets_taken, dots, Economy, format
+        A Ashish Reddy, India, Wankhede Stadium, 21, 21, 2, 5, 6, T20I
+
+    """
+
+    examples = [
+        {
+            "Question": "virat Kohli vs jasprit bumrah Record",
+            "SQLQuery": "Select All From batter_vs_bowler where striker LIKE 'V% Kohli' AND bowler LIKE 'J% Bumrah'"
+        },
+        {
+            "Question": "virat kohli runs in ipl 2024",
+            "SQLQuery": "Select * from batting_record_by_year where striker LIKE 'V% Kohli' AND year=2024 AND format = 'IPL'"
+        },
+        {
+            "Question": "jasprit bumrah wickets in ipl",
+            "SQLQuery": "Select bowler, played_for, innings, wickets_taken, dots, Economy From bowling_record where bowler LIKE 'J% Bumrah' AND format = 'IPL'"
+        },
+        {
+            "Question": "rohit Sharma scores in last 7 innings in t20i",
+            "SQLQuery": "Select * From batting_record_by_innings where striker LIKE 'R% Sharma' LIMIT 7 AND format = 'T20I'"
+        },
+        {
+            "Question": "Jasprit Bumrah bowling economy in recent innings",
+            "SQLQuery": "Select * From bowling_record_by_innings where bowler LIKE 'J% Bumrah' LIMIT 5"
+        },
+        {
+            "Question": "most sixes hit by player",
+            "SQLQuery": "Select * From batting_record order by sixes DESC LIMIT 10"
+        },
+        {
+            "Question": "Virat Kohli Record on 18 May in all Years",
+            "SQLQuery": "Select * from batting_record_by_innings where striker LIKE 'V% Kohli' AND EXTRACT(MONTH FROM start_date) = 5 AND EXTRACT(DAY FROM start_date) = 18"
+        },
+        {
+            "Question": "virat Kohli vs pakistan",
+            "SQLQuery": "Select * From batter_vs_team where striker LIKE 'V% Kohli' AND bowling_team LIKE 'Pakistan'"
+        },
+        {
+            "Question": "Rohit Sharma Runs for Mumbai Indians",
+            "SQLQuery": "Select * From batting_record where striker LIKE 'RG% Sharma' AND played_for LIKE 'Mumbai Indians'"
+        },
+        {
+            "Question": "Most Wickets for rajasthan royals",
+            "SQLQuery": "Select bowler, played_for, wickets, innings, Economy From bowling_record where played_for LIKE 'Rajasthan Royals' Order By wickets_taken DESC"
+        },
+        {
+            "Question": "Rohit Sharma Batting Record",
+            "SQLQuery": "Select * From batting_record where striker LIKE 'RG% Sharma'"
+        },
+        {
+            "Question": "Most Wickets By Indian Player Against Pakistan in T20I",
+            "SQLQuery": "Select * From bowler_vs_team where played_for LIKE 'India' AND batting_team LIKE 'Pakistan' AND format = 'T20I' order by wickets_taken DESC"
+        }
+    ]
+
+    example_output_format = """
+    {
+        "sql_query': "Select * From bowler_vs_team where played_for LIKE 'India' AND batting_team LIKE 'Pakistan' AND format = 'T20I' order by wickets_taken DESC"
+    }
+    """    
+
+    input_prompt = f"""
+    You are a Smart AI Cricket Analyst, working on IPL (Indian Premier League) and T20I (T20 Internationals) data.
+
+    Your task is to generate a SQL query based on the user input to filter cricket data from the database. Extract player names, stadium names, and team names from the user input and filter accordingly.
+
+    Remember:
+    - Each row in the database represents a ball event.
+    - Use only the specified columns to construct the SQL query.
+    - If the format (like IPL or T20I) is mentioned, apply a filter by format in the SQL query.
+    - If the format is not mentioned, ignore the format filter.
+
+    Database Table Information: {table_info}
+
+    For player names, use the following format (last name is always complete):
+    - [Initial letter of first name + any letters in between + last name]
+    - Example: For a player named Sunil Narine, use "S% Narine"
+
+    Here are some few-shot examples:
+    {examples}
+
+    Generate the SQL query based on the following user input:
+    [user input] = {user_input}
+
+    Output only 1 SQL Query the following Format: {example_output_format}
+    Dont Generate Any other Characters!
+    """
+
+    hf_model = get_hf_model()
+
+    try:
+        prompt = input_prompt
+        response = hf_model.invoke(prompt)
+        # print("User Input:", user_input)
+        # print("Response:", response)
+        cleaned_response = re.sub(r'^-+$', '', response, flags=re.MULTILINE).strip()
+        # print("Cleaned Response:", cleaned_response)
+        json_part = re.search(r'\{.*\}', response, re.DOTALL).group()
+        json_response = json.loads(cleaned_response)
+        # print("JSON Response:", json_response)
+        generated = json_response['sql_query']
+        return generated
+    except:
+        return None
+
+################
+# Hugging Face #
+################
 
 def load_database_collection(mongo_uri):
     # Connect to MongoDB
@@ -354,7 +544,8 @@ def main():
             # Display assistant response in chat message container
             with st.chat_message("assistant"):
 
-                sql_query = filter_database(user_input)
+                # sql_query = filter_database(user_input)
+                sql_query = get_sql_query(user_input) # Hugging Face
                 # Query the database
                 if sql_query:
                     column_names, result = query_database(conn, sql_query)
