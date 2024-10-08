@@ -8,7 +8,7 @@ import certifi
 import os
 from langchain_huggingface import HuggingFaceEndpoint
 import re
-
+from langchain_groq import ChatGroq
 #
 # Database for Storing Chats
 ca = certifi.where()
@@ -16,7 +16,7 @@ ca = certifi.where()
 mongo_uri = st.secrets['mongo_uri']
 key = st.secrets['key']
 hf_api_token = st.secrets['hf_token']
-
+groq_key = st.secrets['groq_key']
 
 ################
 # Hugging Face #
@@ -38,6 +38,17 @@ def get_hf_model():
     )
     return model
 
+def get_llama_model():
+    g_key = groq_key
+    os.environ['GROQ_API_KEY'] = g_key
+
+    model_name = 'llama-3.1-8b-instant'
+
+    model = ChatGroq(
+        model=model_name
+    )
+
+    return model
 
 def get_sql_query(user_input):
     table_info = """
@@ -183,20 +194,21 @@ def get_sql_query(user_input):
     Dont Generate Any other Characters!
     """
 
-    hf_model = get_hf_model()
+    hf_model = get_llama_model()
 
     try:
         prompt = input_prompt
         response = hf_model.invoke(prompt)
         # print("User Input:", user_input)
         # print("Response:", response)
-        cleaned_response = re.sub(r'^-+$', '', response, flags=re.MULTILINE).strip()
-        # print("Cleaned Response:", cleaned_response)
-        json_part = re.search(r'\{.*\}', response, re.DOTALL).group()
-        json_response = json.loads(cleaned_response)
-        # print("JSON Response:", json_response)
-        generated = json_response['sql_query']
-        return generated
+        # cleaned_response = re.sub(r'^-+$', '', response, flags=re.MULTILINE).strip()
+        # # print("Cleaned Response:", cleaned_response)
+        # json_part = re.search(r'\{.*\}', response, re.DOTALL).group()
+        # json_response = json.loads(cleaned_response)
+        # # print("JSON Response:", json_response)
+        # generated = json_response['sql_query']
+        # return generated
+        return response.content
     except:
         return None
 
@@ -401,10 +413,11 @@ def filter_database(user_input):
 
 
 def analyze_result(df, user_input):
-    genai.configure(api_key=key)
-    model = genai.GenerativeModel('gemini-pro')
+    # genai.configure(api_key=key)
+    # model = genai.GenerativeModel('gemini-pro')
+    model = get_llama_model()
     # prompt = f"""
-    # You are a AI Cricket Stats Assistant Like ChatGPT but for Cricket. 
+    # You are a AI Cricket Stats Assistant Like ChatGPT but for Cricket.
     # Based on Previous User Input: {user_input}, You have Successfully got a resulting Dataframe: {df}
     # Analyze this Dataframe df about cricket(IPL) records, Give a brief summary highlighting important stats like runs_scored, wickets_taken, etc from df.
     # and dont include false numbers, summarize in 3-4 lines
@@ -413,29 +426,29 @@ def analyze_result(df, user_input):
     # """
     # Convert DataFrame to dictionary
     df_dict = df.to_dict(orient='records')
-    
+
     prompt = f"""
     You are a AI Cricket Content Writer. 
     Based on Previous User Input: {user_input}, You have Successfully got a resulting Data in Form of Python Dictionary: {df_dict}
     Analyze this Data about cricket Player records and Briefly Summerize.
-    Don't Reveal any Backend Information, Assume You have Learned from Data, And Just Add 3-5 Bullet Points to Summarize the Data
+    Don't Reveal any Backend Information, Assume You have Learned from Data, And Just Add 3-7 Bullet Points to Summarize the Data
     Don't Write Your Own Lines, Use Data to Write the Summary
     Explain in Cricket Terms dont include Technical Terms!
     If Dataframe is Empty, Ask Them to Try Again!
     """
 
-    
     # prompt = f"""
     # You are a Cricket Data Analyst, Summarize the Dataframe: {df} of {user_input},
-    # Generate Response in Following Format: 
+    # Generate Response in Following Format:
     # Mention the user_input on top
     # then on each row give, [column_name: value] each on new line:
     # till all the column values written
     # """
-    
-    response = model.generate_content(prompt)
 
-    return response
+    # response = model.generate_content(prompt)
+    response = model.invoke(prompt)
+
+    return response.content
 
 
 def main():
@@ -557,11 +570,11 @@ def main():
                     # st.write(df)
 
                     content = analyze_result(df, user_input)
-                    st.write(content.text)
+                    st.write(content)
                     # Store user message and assistant response
                     store_message(collection,
                                   {"User": user_input,
-                                   "AI": content.text})
+                                   "AI": content})
                     st.write(df)
 
                 else:
