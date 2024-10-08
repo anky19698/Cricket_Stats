@@ -8,3 +8,4 @@ requests
 pymongo
 certifi
 langchain_huggingface
+langchain_groq
