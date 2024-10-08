@@ -41,7 +41,7 @@ def get_hf_model():
 
 def get_llama_model():
     g_key = groq_key
-    os.environ['GROQ_API_KEY'] = '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'
+    os.environ['GROQ_API_KEY'] = g_key
 
     model_name = 'llama-3.1-8b-instant'
 
