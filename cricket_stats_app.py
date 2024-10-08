@@ -419,7 +419,7 @@ def main():
                     st.write("Sorry, I couldn't understand your query.")
 
             # Add assistant response to chat history
-            st.session_state.messages.append({"role": "assistant", "content": content.text})
+            st.session_state.messages.append({"role": "assistant", "content": content})
 
             
             
