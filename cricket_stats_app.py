@@ -41,7 +41,7 @@ def get_hf_model():
 
 def get_llama_model():
     g_key = groq_key
-    os.environ['GROQ_API_KEY'] = g_key
+    os.environ['GROQ_API_KEY'] = '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'
 
     model_name = 'llama-3.1-8b-instant'
 
@@ -162,11 +162,6 @@ def get_sql_query(user_input):
         }
     ]
 
-    example_output_format = """
-    {
-        "sql_query': "Select * From bowler_vs_team where played_for LIKE 'India' AND batting_team LIKE 'Pakistan' AND format = 'T20I' order by wickets_taken DESC"
-    }
-    """    
 
     input_prompt = f"""
     You are a Smart AI Cricket Analyst, working on IPL (Indian Premier League) and T20I (T20 Internationals) data.
@@ -188,13 +183,14 @@ def get_sql_query(user_input):
     Here are some few-shot examples:
     {examples}
 
-    Generate the SQL query based on the following user input:
-    [user input] = {user_input}
+    Generate only the SQL query
+    No Preamble
 
-    Output only 1 SQL Query the following Format: {example_output_format}
-    Dont Generate Any other Characters!
-    """
+    Question: {user_input}
 
+    SQLQuery: """
+
+    # hf_model = get_hf_model()
     hf_model = get_llama_model()
 
     try:
@@ -251,166 +247,6 @@ def query_database(conn, query):
     return column_names, data
 
 
-def filter_database(user_input):
-    genai.configure(api_key=key)
-    model = genai.GenerativeModel('gemini-pro')
-
-    # user_input = input(" Please Ask: ")
-
-    table_info = """
-
-    TABLE: batter_vs_venue
-
-        striker, played_for, stadium, innings, runs_scored, balls_faced, dots, fours, sixes, fifties, hundreds, batting_AVG, batting_SR, dot_percentage, format
-        A Ashish Reddy, India, Arun Jaitley Stadium, 1, 16, 9, 1, 1, 2, 0, 0, 16.0, 177.77777777777777, 11.11111111111111, T20I
-
-    TABLE: batter_vs_team
-    
-        striker, played_for, bowling_team, innings, runs_scored, balls_faced, dots, fours, sixes, fifties, hundreds, batting_AVG, batting_SR, dot_percentage, format
-        A Ashish Reddy, India, Chennai Super Kings, 3, 45, 25, 2, 3, 3, 0, 0, 22.5, 180.0, 32.0, T20I
-    
-    TABLE: batter_vs_bowler
-    
-        striker, bowler, innings, runs_scored, wickets_taken, batting_SR, dot_percentage, format
-        A Ashish Reddy, A Nehra, 2, 7, 1, 77.77777777777777, 55.55555555555556, T20I
-    
-    TABLE: bowling_record
-    
-        bowler, played_for, innings, runs_conceded, balls_bowled, wickets_taken, dots, fours, sixes, Economy, bowling_AVG, format
-        A Ashish Reddy, India, 20, 400, 270, 18, 89, 26, 20, 8.88888888888889, 22.22222222222222, T20I
-    
-    TABLE: batting_record
-    
-        striker, played_for, innings, runs_scored, balls_faced, dots, fours, fifties, hundreds, sixes, batting_SR, dot_percentage, batting_AVG, format
-        A Ashish Reddy, India, 23, 280, 196, 13, 61, 16, 1, 15, 142.85714285714286, 31.122448979591837, 21.53846153846154, T20I
-    
-    TABLE: bowling_record_by_year
-    
-        bowler, played_for, year, innings, runs_conceded, balls_bowled, wickets_taken, dots, fours, sixes, Economy, bowling_AVG, format
-        A Ashish Reddy, India, 2022, 20, 400, 270, 18, 89, 26, 20, 8.88888888888889, 22.22222222222222, T20I
-    
-    TABLE: batting_record_by_year
-    
-        striker, played_for, year, innings, runs_scored, balls_faced, dots, fours, fifties, hundreds, sixes, batting_SR, dot_percentage, batting_AVG, format
-        A Ashish Reddy, India, 2022, 23, 280, 196, 13, 61, 16, 1, 15, 142.85714285714286, 31.122448979591837, 21.53846153846154, T20I
-    
-    TABLE: batting_record_by_innings
-    
-        striker, played_for, bowling_team, start_date, runs_scored, balls_faced, player_dismissed, dots, fours, sixes, batting_SR, dot_percentage, format
-        V Kohli, India, Punjab Kings, 2024-05-04, 21, 21, Yes, 2, 5, 6, 100, 20, T20I
-    
-    TABLE: bowling_record_by_innings
-    
-        bowler, played_for, batting_team, start_date, runs_conceded, balls_bowled, wickets_taken, dots, Economy, format
-        A Ashish Reddy, India, Punjab Kings, 2024-05-04, 21, 21, 2, 5, 6, T20I
-    
-    TABLE: bowler_vs_team
-    
-        bowler, played_for, batting_team, runs_conceded, balls_bowled, wickets_taken, dots, Economy, format
-        A Ashish Reddy, India, Punjab Kings, 21, 21, 2, 5, 6, T20I
-
-    TABLE: bowler_vs_venue
-    
-        bowler, played_for, stadium, runs_conceded, balls_bowled, wickets_taken, dots, Economy, format
-        A Ashish Reddy, India, Wankhede Stadium, 21, 21, 2, 5, 6, T20I
-
-    """
-
-    # user_input = "kl rahul vs jasprit bumrah Record"
-
-    input_prompt = f"""
-    You are a Smart AI Cricket Analyst, Working on IPL(Indian Premier League) and T20I(T20 Internationals) Data
-
-    You're tasked with generating a SQL query based on the user input to filter cricket data from the database. Your goal is to extract Player Names, Stadium Names, and Team Names from the user input and filter accordingly.
-
-    Remember, each row in the database represents a Ball Event, and you should only use the specified columns to construct the SQL query.
-
-    Check if Format is mentioned in query, Like IPL or T20I. If Mentioned, then Apply Filter by format in SQL query also.
-    If not mentioned, then ignore format filter.
-
-    Here's the Database Table Information: {table_info}
-
-    For Player Names, use the following format (LastName is always complete):
-    [initial Letter of firstName + any letters in between + LastName]
-    Example: For a player named Sunil Narine, use "S% Narine"
-
-
-
-    1) virat Kohli vs jasprit bumrah Record
-
-    Expected SQL Output:
-    select * from batter_vs_bowler where lower(striker) like "v% kohli" and lower(bowler) like "j% bumrah"
-    
-    2) virat kohli runs in ipl 2024
-    
-    Expected SQL Output:
-    select * from batting_record_by_year where lower(striker) like "v% kohli" and year=2024 and lower(format) = 'ipl'
-    
-    3) jasprit bumrah wickets in ipl
-    
-    Expected SQL Output:
-    select bowler, played_for, innings, wickets_taken, dots, economy from bowling_record where lower(bowler) like "j% bumrah" and lower(format) = 'ipl'
-    
-    4) rohit Sharma scores in last 7 innings in t20i
-    
-    Expected SQL Output:
-    select * from batting_record_by_innings where lower(striker) like "r% sharma" limit 7 and lower(format) = 't20i'
-    
-    5) jasprit bumrah bowling economy in recent innings
-    
-    Expected SQL Output:
-    select * from bowling_record_by_innings where lower(bowler) like "j% bumrah" limit 5
-    
-    6) virat Kohli Record on 18 May in all Years
-    
-    Expected SQL Output:
-    select * from batting_record_by_innings where lower(striker) like "v% kohli" and extract(month from start_date) = 5 and extract(day from start_date) = 18
-    
-    7) virat Kohli vs pakistan
-    
-    Expected SQL Output:
-    select * from batter_vs_team where lower(striker) like "v% kohli" and lower(bowling_team) like "pakistan"
-    
-    8) rohit Sharma Runs for Mumbai Indians
-    
-    Expected SQL Output:
-    select * from batting_record where lower(striker) like "rg% sharma" and lower(played_for) like "mumbai indians"
-    
-    9) most Wickets for rajasthan royals
-    
-    Expected SQL Output:
-    select bowler, played_for, wickets, innings, economy from bowling_record where lower(played_for) like "rajasthan royals" order by wickets_taken desc
-    
-    10) rohit Sharma Batting Record
-    
-    Expected SQL Output:
-    select * from batting_record where lower(striker) like "rg% sharma"
-    
-    11) most Wickets By Indian Player Against Pakistan in T20I
-    
-    Expected SQL Output:
-    select * from bowler_vs_team where lower(played_for) like "india" and lower(batting_team) like "pakistan" and lower(format) = "t20i" order by wickets_taken
-     
-    
-    Remember, only use filters or sorts in the SQL query, and do not use any type of JOIN operations.
-
-    Ensure that the SQL query is written only for the relevant table and includes columns and table names only from the Table Information.
-
-    [user input] = {user_input}
-    """
-
-    response = model.generate_content(input_prompt)
-
-    # data = pd.read_csv('all_ipl_data.csv')
-    #
-    # print(data.columns)
-
-    print(response.text)
-
-    sql_query = response.text.replace('```', '')
-    sql_query = sql_query.replace('sql', '', 1)
-
-    return sql_query
 
 
 def analyze_result(df, user_input):
@@ -560,6 +396,7 @@ def main():
 
                 # sql_query = filter_database(user_input)
                 sql_query = get_sql_query(user_input) # Hugging Face
+                print(sql_query)
                 # Query the database
                 if sql_query:
                     column_names, result = query_database(conn, sql_query)
